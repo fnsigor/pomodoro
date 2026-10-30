@@ -4,9 +4,9 @@ App de foco — temporizador estilo Pomodoro com atividades, histórico e meta d
 
 ## Baixar o app desktop
 
-👉 **[Última versão (Releases)](https://github.com/fnsigor/pomodoro/releases/latest)**
+👉 **[Baixar FocusFlow](https://claude.ai/artifact/2MfyXqioxCxxkmV2rddwhJ)** — detecta seu sistema operacional e já mostra o instalador certo.
 
-A página de release tem bastante arquivo — a maioria não é pra baixar. Use esta tabela:
+Prefere ir direto na fonte? [Última versão (Releases)](https://github.com/fnsigor/pomodoro/releases/latest). A página de release tem bastante arquivo — a maioria não é pra baixar. Use esta tabela:
 
 | Sistema | Baixe o arquivo que termina em |
 | --- | --- |
