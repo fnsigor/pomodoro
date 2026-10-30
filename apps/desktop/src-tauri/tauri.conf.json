@@ -27,6 +27,13 @@
   "bundle": {
     "active": true,
     "targets": "all",
-    "icon": ["icons/icon.png"]
+    "icon": ["icons/icon.png"],
+    "createUpdaterArtifacts": true
+  },
+  "plugins": {
+    "updater": {
+      "pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IDc4RUEwRTg3MUUxRTZGQ0UKUldUT2J4NGVodzdxZU10OWtMa1liVWJlRlFhWVB2eHRyV1FvRmhPdFlxcjhFWUxRcTh1d1A2VUIK",
+      "endpoints": ["https://github.com/fnsigor/pomodoro/releases/latest/download/latest.json"]
+    }
   }
 }

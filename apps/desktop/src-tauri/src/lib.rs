@@ -6,9 +6,7 @@ use tauri_plugin_sql::{Builder as SqlBuilder, Migration, MigrationKind};
 ///
 /// Várias instruções SQL num único `Migration.sql` é o padrão do migrator do
 /// sqlx (reaproveitado pelo tauri-plugin-sql) — cada migration roda como um
-/// script, não uma instrução isolada. Não foi possível confirmar com
-/// `cargo check` real neste ambiente (sem Rust instalado); revisado
-/// manualmente contra a documentação oficial do plugin.
+/// script, não uma instrução isolada.
 const MIGRATION_V1_SQL: &str = r#"
 CREATE TABLE atividades (
   id TEXT PRIMARY KEY, nome TEXT NOT NULL, cor TEXT NOT NULL, ativa INTEGER NOT NULL DEFAULT 0
@@ -44,6 +42,8 @@ pub fn run() {
                 .add_migrations("sqlite:app.db", migrations)
                 .build(),
         )
+        .plugin(tauri_plugin_updater::Builder::new().build())
+        .plugin(tauri_plugin_process::init())
         .run(tauri::generate_context!())
         .expect("erro ao rodar o app FocusFlow");
 }

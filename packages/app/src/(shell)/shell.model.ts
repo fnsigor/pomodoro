@@ -1,18 +1,21 @@
 import { useCallback, useEffect, useState } from 'react'
-import { calcularStreak, type Relogio, type SessaoRepository } from '@focusflow/core'
+import { calcularStreak, type Atualizacao, type Atualizador, type Relogio, type SessaoRepository } from '@focusflow/core'
 import type { AbaId } from './shell.types'
 
 export interface ShellModelProps {
   sessaoRepo: SessaoRepository
   relogio: Relogio
+  atualizador: Atualizador
 }
 
 const DURACAO_TOAST_MS = 3000
 
-export function useShellModel({ sessaoRepo, relogio }: ShellModelProps) {
+export function useShellModel({ sessaoRepo, relogio, atualizador }: ShellModelProps) {
   const [abaAtiva, setAbaAtiva] = useState<AbaId>('timer')
   const [streak, setStreak] = useState(0)
   const [toast, setToast] = useState<string | null>(null)
+  const [atualizacaoDisponivel, setAtualizacaoDisponivel] = useState<Atualizacao | null>(null)
+  const [instalandoAtualizacao, setInstalandoAtualizacao] = useState(false)
 
   const recarregarStreak = useCallback(async () => {
     const dias = await sessaoRepo.listarDiasComFoco()
@@ -36,6 +39,27 @@ export function useShellModel({ sessaoRepo, relogio }: ShellModelProps) {
     return () => clearTimeout(id)
   }, [toast])
 
+  useEffect(() => {
+    let cancelado = false
+    atualizador.verificar().then((atualizacao) => {
+      if (!cancelado && atualizacao) setAtualizacaoDisponivel(atualizacao)
+    })
+    return () => {
+      cancelado = true
+    }
+  }, [atualizador])
+
+  const instalarAtualizacao = useCallback(async () => {
+    setInstalandoAtualizacao(true)
+    try {
+      await atualizador.instalar()
+    } finally {
+      setInstalandoAtualizacao(false)
+    }
+  }, [atualizador])
+
+  const dispensarAtualizacao = useCallback(() => setAtualizacaoDisponivel(null), [])
+
   return {
     abaAtiva,
     selecionarAba: setAbaAtiva,
@@ -43,5 +67,9 @@ export function useShellModel({ sessaoRepo, relogio }: ShellModelProps) {
     toast,
     notificar: setToast,
     recarregarStreak,
+    atualizacaoDisponivel,
+    instalandoAtualizacao,
+    instalarAtualizacao,
+    dispensarAtualizacao,
   }
 }

@@ -3,3 +3,4 @@
 export { atividadeRepo } from './atividadeRepo'
 export { presetRepo } from './presetRepo'
 export { sessaoRepo } from './sessaoRepo'
+export { atualizador } from './atualizador'
