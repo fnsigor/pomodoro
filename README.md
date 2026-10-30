@@ -1,10 +1,13 @@
 # FocusFlow
 
-App de foco — temporizador estilo Pomodoro com atividades, histórico e meta diária. Um único codebase (Vite + React) atende **web** e **desktop** (Tauri 2); a regra de negócio e o visual são idênticos nas duas plataformas, só a persistência muda.
+[![Licença MIT](https://img.shields.io/badge/licença-MIT-8B5CF6)](./LICENSE)
+
+App de foco — temporizador estilo Pomodoro com atividades, histórico e meta diária. Um único codebase (Vite + React) atende **web** e **desktop** (Tauri 2); a regra de negócio e o visual são idênticos nas duas plataformas, só a persistência muda. **Open source, licença MIT.**
 
 ## Usar agora
 
-🌐 **[Abrir o app web](https://focusflow-nine-iota.vercel.app)**
+- 🌐 **[Abrir o app web](https://focusflow-nine-iota.vercel.app)**
+- 📣 **[Conhecer o projeto](https://focusflow-nine-iota.vercel.app/open-source.html)** — página de divulgação, com recursos e um resumo de como contribuir
 
 ## Baixar o app desktop
 
