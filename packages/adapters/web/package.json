@@ -1,0 +1,21 @@
+{
+  "name": "@focusflow/adapters-web",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "test": "vitest run",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@focusflow/core": "workspace:*"
+  },
+  "devDependencies": {
+    "typescript": "~6.0.2",
+    "vitest": "^3.0.5",
+    "jsdom": "^25.0.1"
+  }
+}

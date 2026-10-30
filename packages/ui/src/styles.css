@@ -1,0 +1,79 @@
+@import "tailwindcss";
+@import "@fontsource/inter/400.css";
+@import "@fontsource/inter/500.css";
+@import "@fontsource/inter/600.css";
+@import "@fontsource/inter/700.css";
+@import "@fontsource/space-grotesk/400.css";
+@import "@fontsource/space-grotesk/500.css";
+@import "@fontsource/space-grotesk/600.css";
+@import "@fontsource/space-grotesk/700.css";
+
+/* Escaneia as classes hardcoded nos próprios componentes deste pacote — sem
+ * isso, o Tailwind (rodando a partir da raiz do Vite de cada app) nunca olha
+ * para packages/ui/src e descarta qualquer classe usada só aqui. */
+@source "./";
+/* Escaneia classes usadas em packages/app, que consome estes componentes. */
+@source "../../app/src";
+
+@theme {
+  /* Tokens extraídos de design/home.html / CLAUDE.md (tema único escuro). */
+  --color-bg: #0a0a0a;
+  --color-panel: #1a1a1a;
+  /* Consolida #151515 / #191919 / #1b1b1b do protótipo (superfícies rebaixadas). */
+  --color-panel-2: #171717;
+  --color-panel-sunken: #0d0d0d;
+  --color-primary: #8b5cf6;
+  --color-primary-soft: #a78bfa;
+  --color-primary-hover: #9569f7;
+  --color-primary-tint: #282033;
+  --color-muted: #9ca3af;
+  --color-ink: #ffffff;
+  --color-fire: #fb923c;
+  /* Consolida #252525–#292929 do protótipo (bordas padrão de cards/nav/botões). */
+  --color-border: #282828;
+  --color-border-strong: #363636;
+  --color-track: #292929;
+  --color-success: #22c55e;
+  --color-success-bg: #1d3025;
+  /* Protótipo também usa #4b4b4b para o número do preset não selecionado; optamos
+   * por um único token (#666666) para rótulo + número não selecionados. */
+  --color-disabled-ink: #666666;
+  /* #242424 do toast do protótipo não bate com nenhum token de superfície acima. */
+  --color-toast-bg: #242424;
+  /* Extras sem token explícito no enunciado, documentados aqui: */
+  --color-overlay: rgba(0, 0, 0, 0.6);
+  --color-shadow: rgba(0, 0, 0, 0.5);
+
+  --color-glow: rgba(139, 92, 246, 0.3);
+
+  --font-display: "Space Grotesk", system-ui, sans-serif;
+  --font-sans: "Inter", Arial, sans-serif;
+
+  /* Breakpoints do Temporizador (desktop-first no protótipo, por isso usamos
+   * as variantes max-tablet:/max-mobile: geradas automaticamente pelo Tailwind
+   * v4 a partir de --breakpoint-*). */
+  --breakpoint-tablet: 1051px;
+  --breakpoint-mobile: 621px;
+}
+
+@layer base {
+  html,
+  body {
+    min-height: 100%;
+    background-color: var(--color-bg);
+    color: var(--color-ink);
+  }
+
+  *:focus-visible {
+    outline: 3px solid var(--color-primary);
+    outline-offset: 2px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

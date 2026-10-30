@@ -1,0 +1,19 @@
+{
+  "name": "@focusflow/adapters-tauri",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@focusflow/core": "workspace:*",
+    "@tauri-apps/plugin-sql": "^2.2.0"
+  },
+  "devDependencies": {
+    "typescript": "~6.0.2"
+  }
+}

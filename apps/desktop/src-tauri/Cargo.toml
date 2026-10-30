@@ -1,0 +1,23 @@
+[package]
+name = "focusflow-desktop"
+version = "0.0.0"
+description = "FocusFlow — app de foco com temporizador, histórico e meta diária"
+authors = ["FocusFlow"]
+edition = "2021"
+# tauri-plugin-sql v2 exige Rust >= 1.90 (confirmado via documentação oficial do plugin).
+rust-version = "1.90"
+
+# "app_lib" é o padrão do scaffold Tauri 2: main.rs (desktop) e o entry point
+# mobile chamam a mesma função `run()` daqui, por isso o código mora em lib.rs.
+[lib]
+name = "focusflow_desktop_lib"
+crate-type = ["staticlib", "cdylib", "rlib"]
+
+[build-dependencies]
+tauri-build = { version = "2", features = [] }
+
+[dependencies]
+tauri = { version = "2", features = [] }
+tauri-plugin-sql = { version = "2", features = ["sqlite"] }
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
