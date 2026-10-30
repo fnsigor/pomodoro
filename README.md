@@ -2,9 +2,12 @@
 
 App de foco — temporizador estilo Pomodoro com atividades, histórico e meta diária. Um único codebase (Vite + React) atende **web** e **desktop** (Tauri 2); a regra de negócio e o visual são idênticos nas duas plataformas, só a persistência muda.
 
-## Baixar o app desktop
+## Usar agora
 
-👉 **[Baixar FocusFlow](https://claude.ai/artifact/2MfyXqioxCxxkmV2rddwhJ)** — detecta seu sistema operacional e já mostra o instalador certo.
+- 🌐 **[Abrir o app web](https://focusflow-nine-iota.vercel.app)**
+- 💻 **[Baixar o app desktop](https://focusflow-nine-iota.vercel.app/baixar.html)** — detecta seu sistema operacional e já mostra o instalador certo.
+
+## Baixar o app desktop
 
 Prefere ir direto na fonte? [Última versão (Releases)](https://github.com/fnsigor/pomodoro/releases/latest). A página de release tem bastante arquivo — a maioria não é pra baixar. Use esta tabela:
 
