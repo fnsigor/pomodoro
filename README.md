@@ -6,9 +6,17 @@ App de foco — temporizador estilo Pomodoro com atividades, histórico e meta d
 
 👉 **[Última versão (Releases)](https://github.com/fnsigor/pomodoro/releases/latest)**
 
-Baixe o instalador do seu sistema operacional (`.dmg`/`.app` no macOS, `.msi`/`.exe` no Windows, `.deb`/`.rpm`/`.AppImage` no Linux) e instale como qualquer outro app. Atualizações seguintes são aplicadas automaticamente pelo próprio app.
+A página de release tem bastante arquivo — a maioria não é pra baixar. Use esta tabela:
 
-> Ainda não existe nenhuma release publicada — o link acima só terá instaladores depois da primeira tag `v*` enviada (dispara `.github/workflows/release.yml`, ver [`docs/distribuicao-e-atualizacoes.md`](./docs/distribuicao-e-atualizacoes.md)).
+| Sistema | Baixe o arquivo que termina em |
+| --- | --- |
+| Windows | `_x64-setup.exe` (ou `.msi`, equivalente) |
+| macOS | `.dmg` |
+| Linux — a maioria das distros | `.AppImage` (não precisa instalar nada) |
+| Linux — Debian/Ubuntu | `.deb` |
+| Linux — Fedora/RHEL | `.rpm` |
+
+Os arquivos `.sig` e o `latest.json` **não são pra baixar** — são usados internamente pelo app pra verificar atualizações. Depois de instalado, as próximas versões chegam automaticamente (o app mesmo avisa e pergunta antes de atualizar).
 
 ## Stack
 
