@@ -2,6 +2,14 @@
 
 App de foco — temporizador estilo Pomodoro com atividades, histórico e meta diária. Um único codebase (Vite + React) atende **web** e **desktop** (Tauri 2); a regra de negócio e o visual são idênticos nas duas plataformas, só a persistência muda.
 
+## Baixar o app desktop
+
+👉 **[Última versão (Releases)](https://github.com/fnsigor/pomodoro/releases/latest)**
+
+Baixe o instalador do seu sistema operacional (`.dmg`/`.app` no macOS, `.msi`/`.exe` no Windows, `.deb`/`.rpm`/`.AppImage` no Linux) e instale como qualquer outro app. Atualizações seguintes são aplicadas automaticamente pelo próprio app.
+
+> Ainda não existe nenhuma release publicada — o link acima só terá instaladores depois da primeira tag `v*` enviada (dispara `.github/workflows/release.yml`, ver [`docs/distribuicao-e-atualizacoes.md`](./docs/distribuicao-e-atualizacoes.md)).
+
 ## Stack
 
 - **React 19** + **TypeScript** estrito, **Tailwind v4** (tema escuro, tokens via `@theme`, sem CSS hardcoded).
