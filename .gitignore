@@ -7,3 +7,5 @@ coverage
 **/src-tauri/target
 **/src-tauri/gen
 *.tsbuildinfo
+.vercel
+.env*
