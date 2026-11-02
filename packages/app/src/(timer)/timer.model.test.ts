@@ -59,7 +59,7 @@ describe('useTimerModel', () => {
       status: 'concluida',
       duracaoSeg: 25 * 60,
     })
-    expect(notificar).toHaveBeenCalledWith('Sessão concluída! Excelente trabalho.')
+    expect(notificar).toHaveBeenCalledWith('Sessão concluída! Excelente trabalho.', 'success')
     expect(result.current.fase).toBe('PAUSA CURTA')
     expect(result.current.rotuloBotao).toBe('Iniciar Pausa')
     expect(result.current.meta.valorPrincipal).toBe('25m')

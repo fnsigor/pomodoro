@@ -1,11 +1,10 @@
-import { Brand, Modal, Toast, Topbar } from '@focusflow/ui'
+import { Brand, Modal, type Notificar, Topbar } from '@focusflow/ui'
 import TimerPage from '../(timer)/TimerPage'
 import type { useShellModel } from './shell.model'
 
-type ShellViewProps = ReturnType<typeof useShellModel>
+type ShellViewProps = ReturnType<typeof useShellModel> & { notificar: Notificar }
 
 export function ShellView({
-  toast,
   notificar,
   atualizacaoDisponivel,
   instalandoAtualizacao,
@@ -17,8 +16,6 @@ export function ShellView({
       <Topbar marca={<Brand />} />
 
       <TimerPage notificar={notificar} />
-
-      <Toast mensagem={toast} />
 
       <Modal
         aberto={atualizacaoDisponivel !== null}

@@ -26,6 +26,7 @@ import {
   type Sessao,
   type SessaoRepository,
 } from '@focusflow/core'
+import type { Notificar } from '@focusflow/ui'
 import type { AtalhosTimer } from '../infra/useAtalhosTeclado'
 import { SchemaPresetPersonalizado } from './timer.schema'
 import { TIMER_ATALHOS, TIMER_MENSAGENS, TIMER_ROTULO_BOTAO } from './timer.messages'
@@ -36,7 +37,7 @@ export interface TimerModelProps {
   atividadeRepo: AtividadeRepository
   presetRepo: PresetRepository
   relogio: Relogio
-  notificar: (mensagem: string) => void
+  notificar: Notificar
 }
 
 // PRESETS_FIXOS sempre tem ao menos o Pomodoro Clássico (constante do core) — invariante garantida.
@@ -139,12 +140,12 @@ export function useTimerModel({
       // Som de fim de fase: decisão de produto em aberto no CLAUDE.md (liga/
       // desliga ainda não existe na tela) — por enquanto só o toast abaixo.
       if (origem === 'pular') {
-        notificar(TIMER_MENSAGENS.fasePulada)
+        notificar(TIMER_MENSAGENS.fasePulada, 'warning')
         return
       }
 
       if (registro?.sessao.status === 'concluida') {
-        notificar(TIMER_MENSAGENS.sessaoConcluida)
+        notificar(TIMER_MENSAGENS.sessaoConcluida, 'success')
       } else if (fimDeFase) {
         notificar(TIMER_MENSAGENS.pausaEncerrada)
       }
@@ -222,7 +223,7 @@ export function useTimerModel({
       setAtividadeAtual(atividade)
       atividadeAtualRef.current = atividade
       setModalAtividadeAberta(false)
-      if (atividade) notificar(TIMER_MENSAGENS.atividadeTrocada(atividade.nome))
+      if (atividade) notificar(TIMER_MENSAGENS.atividadeTrocada(atividade.nome), 'success')
     },
     [atividadeRepo, atividades, notificar],
   )
@@ -255,7 +256,7 @@ export function useTimerModel({
     setPresetsPersonalizados((atual) => [...atual, preset])
     despachar({ tipo: 'trocarPreset', preset })
     setModalPresetAberta(false)
-    notificar(TIMER_MENSAGENS.presetPersonalizadoCriado)
+    notificar(TIMER_MENSAGENS.presetPersonalizadoCriado, 'success')
   }, [novoPresetValor, presetRepo, despachar, notificar])
 
   const restante = restanteMs(estado, agora)

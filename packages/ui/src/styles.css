@@ -40,6 +40,10 @@
   --color-disabled-ink: #666666;
   /* #242424 do toast do protótipo não bate com nenhum token de superfície acima. */
   --color-toast-bg: #242424;
+  /* Fundos dos toasts de status (texto branco passa AA). */
+  --color-toast-success: #166534;
+  --color-toast-warning: #9a3412;
+  --color-toast-error: #991b1b;
   /* Extras sem token explícito no enunciado, documentados aqui: */
   --color-overlay: rgba(0, 0, 0, 0.6);
   --color-shadow: rgba(0, 0, 0, 0.5);
