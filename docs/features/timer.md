@@ -68,6 +68,21 @@ A pílula de status ocioso (`.ready` no protótipo, `StatusBadge` no app) foi re
 
 Verificado com Playwright em 1440×900, 1280×720, 1024×768, 800×600, 390×844 e 320×844: em todas as resoluções `scrollWidth`/`scrollHeight` iguais ao viewport (sem scroll horizontal ou vertical). Screenshots conferidos em 1440×900 e 320×844.
 
+### 7. Carrossel shadcn/Embla com seleção animada por Motion
+
+- Dependências **`embla-carousel-react` (`^8.6.0`)** e **`motion` (`^14.9.0`)** adicionadas em `packages/ui`.
+- `Carousel.tsx` é uma adaptação local do componente do shadcn/ui sobre o Embla (`Carousel`, `CarouselContent`, `CarouselItem`, `CarouselPrevious`, `CarouselNext`, contexto e `useCarousel`). O tratamento de setas do teclado do shadcn foi **removido**: no FocusFlow, `←`/`→` são atalhos globais para trocar o preset.
+- As setas do carrossel executam apenas `scrollPrev`/`scrollNext` do Embla. Elas **nunca** chamam `onSelecionar`: movem a lista sem trocar o preset selecionado. Ficam desabilitadas nas extremidades e somem abaixo de 621px, onde o arraste horizontal assume.
+- A seleção continua acontecendo ao clicar no card (ou pelos atalhos de teclado) e usa a animação do Motion descrita abaixo.
+- Se a seleção cair a menos de 24px de uma borda visível (por exemplo, um preset personalizado no fim da lista), `PresetSelector` rola até o item; clicar em um card já visível e com folga não move o carrossel. `watchSlides: true` mantém as medidas do Embla em dia quando o card selecionado muda de largura.
+- A largura do carrossel é `620px`: no desktop ele mostra cinco dos seis itens (o "+ Novo" começa fora da área) para que as setas tenham o que mover. Em telas menores a quantidade visível diminui.
+- O viewport do Embla usa `-mt-12 pt-12` para estender a área de recorte para cima: a margem negativa cancela o padding e o layout não se desloca, mas o card selecionado (que sobe `14px`) e o glow não são cortados. Nas laterais há um fade de 20px (`mask-image`), que suaviza o glow no limite do viewport.
+- `PresetCard` virou `motion.button` com `layout` e spring (`stiffness: 460`, `damping: 36`, `mass: 0.7`): ao trocar a seleção, os cards vizinhos deslizam e o selecionado cresce/sobe de forma contínua. O conteúdo (valor, unidade e rótulo) entra com fade + scale de `0.18s`; há feedback de `whileTap` (`scale: 0.97`).
+- `useReducedMotion` desliga as animações de layout, o fade e o `whileTap` quando `prefers-reduced-motion` está ativo.
+- `packages/app/vitest.setup.ts` ganhou stubs de `ResizeObserver` e `window.matchMedia`, usados pelo Embla/Motion e ausentes no jsdom.
+
+Verificado com Playwright em 650×800 e 1440×900: clicar em "Próximas opções" altera a transformação do Embla e mantém o preset selecionado; `←`/`→` trocam a seleção; cliques em `Estendido`/`Deep Work` animam até ~320ms sem erros de console; o layout continua sem scroll de página.
+
 ## Verificação
 
 - `pnpm typecheck` — ok
