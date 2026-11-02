@@ -83,6 +83,15 @@ Verificado com Playwright em 1440×900, 1280×720, 1024×768, 800×600, 390×844
 
 Verificado com Playwright em 650×800 e 1440×900: clicar em "Próximas opções" altera a transformação do Embla e mantém o preset selecionado; `←`/`→` trocam a seleção; cliques em `Estendido`/`Deep Work` animam até ~320ms sem erros de console; o layout continua sem scroll de página.
 
+### 8. Tamanho dos ícones e cursor dos botões
+
+- `ControlButton` (reiniciar/pular) passou a dimensionar o SVG em **21px** (`[&_svg]:size-[21px]`), como no protótipo. Antes o SVG sem `width`/`height` herdava o tamanho intrínseco e ficava grande demais.
+- `PrimaryButton` (iniciar/pausar e "Criar preset" no modal) dimensiona o SVG em **19px** (`[&_svg]:size-[19px]`). Isso corrige também o ícone de play gigante que quebrava o layout do modal de novo preset.
+- Regra global em `styles.css` (`@layer base`): `button:enabled` e `[role="button"]:not([aria-disabled="true"])` usam `cursor: pointer`; `button:disabled` e `[role="button"][aria-disabled="true"]` usam `cursor: not-allowed`.
+- As setas do carrossel trocaram `disabled:cursor-default` por `disabled:cursor-not-allowed` para seguir a mesma regra.
+
+Verificado com Playwright: todos os botões habilitados retornam `cursor: pointer` e os desabilitados `cursor: not-allowed`; ícones medem 21px/19px; modal de preset sem quebra de layout e página continua sem scroll em 320–1440px.
+
 ## Verificação
 
 - `pnpm typecheck` — ok
