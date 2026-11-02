@@ -240,6 +240,8 @@ Cores de atividade são dados do usuário, não tokens de tema. Nos gráficos do
 
 ## Convenções de trabalho
 
+- **Não rode `pnpm lint`, `pnpm typecheck` nem `pnpm test` sem permissão.** Execute esses comandos (ou variações por pacote, como `pnpm --filter ... test`) somente quando o Igor pedir explicitamente. Se quiser validar uma mudança, descreva o que deveria ser rodado e aguarde a autorização.
+- **Commits atômicos.** Cada commit contém uma única mudança lógica e pode ser revertido sem arrastar trabalho não relacionado. Mensagens **sempre em inglês**, no imperativo, **sem emoji**, curtas e específicas (ex.: `Remove tabs from the timer shell`).
 - TypeScript estrito. Sem `any` em `core` e nas portas.
 - Testes: `core` (incluindo a máquina de estados do timer) e as funções puras de migration do web sempre têm teste; cada salto de versão tem um caso.
 - Ao mudar o schema: tipo no `core` → método(s) no repositório → **os dois** adaptadores → **as duas** migrations → testes, tudo no mesmo commit.
