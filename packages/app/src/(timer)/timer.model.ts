@@ -127,7 +127,7 @@ export function useTimerModel({
   )
 
   const processarEfeitos = useCallback(
-    (efeitos: EfeitoTimer[], origem: 'tick' | 'pular') => {
+    (efeitos: EfeitoTimer[]) => {
       const registro = efeitos.find(
         (e): e is Extract<EfeitoTimer, { tipo: 'registrarSessao' }> => e.tipo === 'registrarSessao',
       )
@@ -139,11 +139,6 @@ export function useTimerModel({
 
       // Som de fim de fase: decisão de produto em aberto no CLAUDE.md (liga/
       // desliga ainda não existe na tela) — por enquanto só o toast abaixo.
-      if (origem === 'pular') {
-        notificar(TIMER_MENSAGENS.fasePulada, 'warning')
-        return
-      }
-
       if (registro?.sessao.status === 'concluida') {
         notificar(TIMER_MENSAGENS.sessaoConcluida, 'success')
       } else if (fimDeFase) {
@@ -159,7 +154,7 @@ export function useTimerModel({
       const { estado: novoEstado, efeitos } = transicionar(estadoRef.current, evento, t)
       estadoRef.current = novoEstado
       setEstado(novoEstado)
-      if (efeitos.length > 0) processarEfeitos(efeitos, evento.tipo === 'pular' ? 'pular' : 'tick')
+      if (efeitos.length > 0) processarEfeitos(efeitos)
     },
     [relogio, processarEfeitos],
   )
@@ -178,8 +173,6 @@ export function useTimerModel({
     despachar({ tipo: 'reiniciar' })
     notificar(TIMER_MENSAGENS.reiniciado)
   }, [despachar, notificar])
-
-  const pular = useCallback(() => despachar({ tipo: 'pular' }), [despachar])
 
   const presetsCombinados = useMemo<Preset[]>(
     () => [...PRESETS_FIXOS, ...presetsPersonalizados],
@@ -284,7 +277,7 @@ export function useTimerModel({
 
   const titulo = estado.status === 'rodando' ? `${tempo} — FocusFlow` : null
 
-  const atalhos: AtalhosTimer = { alternar, reiniciar, pular, modoAnterior, modoProximo }
+  const atalhos: AtalhosTimer = { alternar, reiniciar, modoAnterior, modoProximo }
 
   return {
     tempo,
@@ -316,6 +309,5 @@ export function useTimerModel({
     titulo,
     alternar,
     reiniciar,
-    pular,
   }
 }

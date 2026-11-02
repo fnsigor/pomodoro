@@ -6,7 +6,6 @@ import {
   IconeReiniciar,
   IconePause,
   IconePlay,
-  IconePular,
   Modal,
   PhaseLabel,
   PresetSelector,
@@ -47,7 +46,6 @@ export function TimerView(props: TimerViewProps) {
   //  meta,
     alternar,
     reiniciar,
-    pular,
   } = props
 
   const presetAtual = presets.find((p) => p.id === presetSelecionadoId)
@@ -85,7 +83,8 @@ export function TimerView(props: TimerViewProps) {
         <div className="mt-7 flex items-center gap-6 max-mobile:gap-4">
           <ControlButton icone={<IconeReiniciar />} ariaLabel="Reiniciar" title="Reiniciar (R)" onClick={reiniciar} />
           <PrimaryButton icone={iconeBotao} rotulo={rotuloBotao} onClick={alternar} />
-          <ControlButton icone={<IconePular />} ariaLabel="Pular fase" title="Pular fase (S)" onClick={pular} />
+          {/* Mantém o botão principal centralizado sob o anel agora que não há "pular fase". */}
+          <div aria-hidden="true" className="h-14 w-14 max-mobile:h-12 max-mobile:w-12" />
         </div>
       </div>
 

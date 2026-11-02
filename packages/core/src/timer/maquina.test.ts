@@ -10,7 +10,6 @@ const presetPorId = (id: string): Preset => {
   return p
 }
 
-const LIVRE = presetPorId('livre')
 const SPRINT = presetPorId('sprint')
 const POMODORO = presetPorId('pomodoro')
 
@@ -66,60 +65,12 @@ describe('ciclo completo do Pomodoro', () => {
   })
 })
 
-describe('pular', () => {
-  it('durante o foco gera sessão cancelada com a duração decorrida arredondada para baixo', () => {
-    let estado = estadoInicial(SPRINT)
-    ;({ estado } = transicionar(estado, { tipo: 'alternar' }, T0))
-
-    const agora = T0 + 90_500 // 1min30.5s
-    const { estado: novoEstado, efeitos } = transicionar(estado, { tipo: 'pular' }, agora)
-
-    const efeito = efeitos.find((e) => e.tipo === 'registrarSessao')
-    expect(efeito).toBeDefined()
-    if (efeito?.tipo === 'registrarSessao') {
-      expect(efeito.sessao.status).toBe('cancelada')
-      expect(efeito.sessao.duracaoSeg).toBe(90)
-    }
-    expect(novoEstado.status).toBe('ocioso')
-    expect(novoEstado.fase).toBe('foco') // sprint não tem pausa
-  })
-
-  it('no modo Livre salva como concluída e zera o estado', () => {
-    let estado = estadoInicial(LIVRE)
-    ;({ estado } = transicionar(estado, { tipo: 'alternar' }, T0))
-
-    const agora = T0 + 70_000 // 70s
-    const { estado: novoEstado, efeitos } = transicionar(estado, { tipo: 'pular' }, agora)
-
-    const efeito = efeitos.find((e) => e.tipo === 'registrarSessao')
-    expect(efeito).toBeDefined()
-    if (efeito?.tipo === 'registrarSessao') {
-      expect(efeito.sessao.status).toBe('concluida')
-      expect(efeito.sessao.duracaoSeg).toBe(70)
-    }
-    expect(novoEstado).toEqual(estadoInicial(LIVRE))
-  })
-
-  it('durante a pausa avança pro próximo foco sem registrar sessão', () => {
-    let estado = estadoInicial(POMODORO)
-    ;({ estado } = transicionar(estado, { tipo: 'alternar' }, T0))
-    const fimFoco = transicionar(estado, { tipo: 'tick' }, T0 + 25 * MIN)
-    estado = fimFoco.estado
-    expect(estado.fase).toBe('pausa-curta')
-
-    const { estado: novoEstado, efeitos } = transicionar(estado, { tipo: 'pular' }, T0 + 25 * MIN + 1000)
-    expect(efeitos.some((e) => e.tipo === 'registrarSessao')).toBe(false)
-    expect(novoEstado.fase).toBe('foco')
-    expect(novoEstado.sessaoNoCiclo).toBe(2)
-  })
-})
-
 describe('sessão abaixo de 1 minuto', () => {
-  it('não gera efeito de registrarSessao', () => {
+  it('não gera efeito de registrarSessao ao reiniciar', () => {
     let estado = estadoInicial(SPRINT)
     ;({ estado } = transicionar(estado, { tipo: 'alternar' }, T0))
 
-    const { efeitos } = transicionar(estado, { tipo: 'pular' }, T0 + 30_000) // 30s
+    const { efeitos } = transicionar(estado, { tipo: 'reiniciar' }, T0 + 30_000) // 30s
     expect(efeitos.some((e) => e.tipo === 'registrarSessao')).toBe(false)
   })
 })

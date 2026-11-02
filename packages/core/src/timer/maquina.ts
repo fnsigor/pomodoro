@@ -19,7 +19,6 @@ export interface EstadoTimer {
 export type EventoTimer =
   | { tipo: 'alternar' } // iniciar, pausar ou continuar, conforme o status
   | { tipo: 'reiniciar' }
-  | { tipo: 'pular' }
   | { tipo: 'tick' } // não muda o status sozinho; permite detectar fim natural da fase
   | { tipo: 'trocarPreset'; preset: Preset }
 
@@ -50,8 +49,6 @@ export function transicionar(estado: EstadoTimer, evento: EventoTimer, agora: Ep
       return alternar(estado, agora)
     case 'reiniciar':
       return reiniciar(estado, agora)
-    case 'pular':
-      return pular(estado, agora)
     case 'tick':
       return tick(estado, agora)
     case 'trocarPreset':
@@ -75,11 +72,11 @@ function decorridoMsInterno(estado: EstadoTimer, agora: EpochMs): number {
   return estado.acumuladoMs
 }
 
-/** Próxima fase/sessão do ciclo, usada tanto pelo fim natural quanto por "pular". */
+/** Próxima fase/sessão do ciclo, usada no fim natural da fase. */
 function avancarCiclo(estado: EstadoTimer): { fase: Fase; sessaoNoCiclo: 1 | 2 | 3 | 4 } {
   // NOTA: leitura aplicada (não 100% explícita no CLAUDE.md, confirmar com o Igor):
   // só o Pomodoro Clássico entra em fase de pausa. Os demais presets (Livre, Sprint,
-  // Estendido, Deep Work) ficam sempre em `fase: 'foco'` — terminar/pular o foco deles
+  // Estendido, Deep Work) ficam sempre em `fase: 'foco'` — terminar o foco deles
   // não troca de fase, só reinicia um novo foco do zero.
   if (estado.preset.id !== 'pomodoro') {
     return { fase: 'foco', sessaoNoCiclo: 1 }
@@ -170,8 +167,8 @@ function reiniciarFaseAtual(estado: EstadoTimer): EstadoTimer {
 
 /**
  * Regra do CLAUDE.md ("Status da sessão"): reiniciar durante o foco com ≥ 1 min
- * decorrido registra CANCELADO, igual a "pular" — só que sem avançar o ciclo
- * (a fase/sessão do ciclo permanecem as mesmas, só o progresso zera).
+ * decorrido registra CANCELADO, sem avançar o ciclo (a fase/sessão do ciclo
+ * permanecem as mesmas, só o progresso zera).
  */
 function reiniciar(estado: EstadoTimer, agora: EpochMs): Transicao {
   const efeitos: EfeitoTimer[] = []
@@ -206,36 +203,6 @@ function tick(estado: EstadoTimer, agora: EpochMs): Transicao {
   const proxima = avancarCiclo(estado)
   efeitos.push({ tipo: 'fimDeFase', proxima: proxima.fase })
 
-  return { estado: estadoAposFimDeFase(estado, proxima), efeitos }
-}
-
-function pular(estado: EstadoTimer, agora: EpochMs): Transicao {
-  if (estado.fase !== 'foco') {
-    // durante pausa: avança direto pro próximo foco, sem gerar registrarSessao.
-    const proxima = avancarCiclo(estado)
-    return {
-      estado: estadoAposFimDeFase(estado, proxima),
-      efeitos: [{ tipo: 'fimDeFase', proxima: proxima.fase }],
-    }
-  }
-
-  const decorrido = decorridoMsInterno(estado, agora)
-  const duracaoSeg = Math.floor(decorrido / 1000)
-  const efeitos: EfeitoTimer[] = []
-
-  if (estado.preset.minutos === null) {
-    // Livre: pular é "terminar" (concluida), não "cancelar" — e zera, sem conceito de ciclo/pausa.
-    if (duracaoSeg >= 60) {
-      efeitos.push(efeitoRegistrar(estado, agora, duracaoSeg, 'concluida', agora))
-    }
-    return { estado: estadoInicial(estado.preset), efeitos }
-  }
-
-  if (duracaoSeg >= 60) {
-    efeitos.push(efeitoRegistrar(estado, agora, duracaoSeg, 'cancelada', agora))
-  }
-  const proxima = avancarCiclo(estado)
-  efeitos.push({ tipo: 'fimDeFase', proxima: proxima.fase })
   return { estado: estadoAposFimDeFase(estado, proxima), efeitos }
 }
 

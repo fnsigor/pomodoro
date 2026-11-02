@@ -3,15 +3,14 @@ import { useEffect, useRef } from 'react'
 export interface AtalhosTimer {
   alternar: () => void
   reiniciar: () => void
-  pular: () => void
   modoAnterior: () => void
   modoProximo: () => void
 }
 
 /**
- * Espaço inicia/pausa, R reinicia, S pula fase, ← → trocam de modo. Ignorados
- * com foco em input/textarea; Espaço não dispara em cima de um botão (evita
- * disparar duas vezes quando o foco está no próprio botão principal).
+ * Espaço inicia/pausa, R reinicia, ← → trocam de modo. Ignorados com foco em
+ * input/textarea; Espaço não dispara em cima de um botão (evita disparar duas
+ * vezes quando o foco está no próprio botão principal).
  */
 export function useAtalhosTeclado(atalhos: AtalhosTimer) {
   const atalhosRef = useRef(atalhos)
@@ -38,10 +37,6 @@ export function useAtalhosTeclado(atalhos: AtalhosTimer) {
         case 'r':
         case 'R':
           atalhosRef.current.reiniciar()
-          break
-        case 's':
-        case 'S':
-          atalhosRef.current.pular()
           break
         case 'ArrowLeft':
           atalhosRef.current.modoAnterior()

@@ -1,7 +1,6 @@
 export const TIMER_MENSAGENS = {
   sessaoConcluida: 'Sessão concluída! Excelente trabalho.',
   reiniciado: 'Temporizador reiniciado',
-  fasePulada: 'Fase pulada',
   // Caso sem texto explícito no CLAUDE.md: fimDeFase sem registrarSessao só
   // acontece quando uma pausa termina naturalmente (só o Pomodoro tem pausa).
   pausaEncerrada: 'Pausa encerrada — hora de focar!',
@@ -20,6 +19,5 @@ export const TIMER_ROTULO_BOTAO = {
 export const TIMER_ATALHOS = [
   { tecla: 'Space', descricao: 'Iniciar ou pausar' },
   { tecla: 'R', descricao: 'Reiniciar' },
-  { tecla: 'S', descricao: 'Pular fase' },
   { tecla: '← →', descricao: 'Trocar modo' },
 ] as const

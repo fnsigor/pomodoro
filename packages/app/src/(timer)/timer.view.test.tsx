@@ -15,7 +15,6 @@ function criarProps(sobrescritas: Partial<TimerViewProps> = {}): TimerViewProps 
     legendaAtalhos: [
       { tecla: 'Space', descricao: 'Iniciar ou pausar' },
       { tecla: 'R', descricao: 'Reiniciar' },
-      { tecla: 'S', descricao: 'Pular fase' },
       { tecla: '← →', descricao: 'Trocar modo' },
     ],
     presets: [
@@ -40,11 +39,10 @@ function criarProps(sobrescritas: Partial<TimerViewProps> = {}): TimerViewProps 
     aoMudarNovoPresetValor: vi.fn(),
     confirmarNovoPreset: vi.fn(),
     meta: { valorPrincipal: '0m', valorMeta: 'de 4h', legenda: '0% concluído hoje • 0 ciclos', percentual: 0 },
-    atalhos: { alternar: vi.fn(), reiniciar: vi.fn(), pular: vi.fn(), modoAnterior: vi.fn(), modoProximo: vi.fn() },
+    atalhos: { alternar: vi.fn(), reiniciar: vi.fn(), modoAnterior: vi.fn(), modoProximo: vi.fn() },
     titulo: null,
     alternar: vi.fn(),
     reiniciar: vi.fn(),
-    pular: vi.fn(),
     ...sobrescritas,
   }
 }

@@ -64,14 +64,6 @@ export function IconeReiniciar({ className, ...props }: IconeProps) {
   );
 }
 
-export function IconePular({ className, ...props }: IconeProps) {
-  return (
-    <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" className={className} {...props}>
-      <path d="M5 5.8c0-1 1.1-1.6 2-1l9 7.2-9 7.2c-.9.6-2 .1-2-1V5.8ZM18 5h2v14h-2z" />
-    </svg>
-  );
-}
-
 export function IconeSetaEsquerda({ className, ...props }: IconeProps) {
   return (
     <svg

@@ -7,7 +7,7 @@ export interface ControlButtonProps {
   onClick?: () => void;
 }
 
-/** Botão quadrado 56px (reiniciar/pular). */
+/** Botão quadrado 56px (ações secundárias, como reiniciar). */
 export function ControlButton({ icone, ariaLabel, title, onClick }: ControlButtonProps) {
   return (
     <button
