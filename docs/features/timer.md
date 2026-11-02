@@ -101,6 +101,20 @@ Verificado com Playwright: todos os botões habilitados retornam `cursor: pointe
 
 Verificado com Playwright: aos 50ms o card está em `opacity ~0.67`, `scale ~0.987` e o fundo em `~0.71`; estabiliza em ~450ms; após fechar, o modal sai do DOM ao fim da animação. Com `reducedMotion: reduce`, abre e fecha instantaneamente. Sem erros de console.
 
+### 10. Toasts com variantes (shadcn/Base UI)
+
+- `Toast.tsx` foi reescrito com o **Toast do shadcn sobre o Base UI** (`@base-ui/react/toast`), com manager global (`toast.add`), provider, portal e viewport.
+- `Toaster` é renderizado uma vez em `App.tsx`; `ShellPage` injeta `notificar(mensagem, tipo)` no shell, e o estado antigo de toast saiu do `useShellModel`.
+- Posição: canto inferior direito (`fixed right-4 bottom-4`, largura máxima `sm`), com empilhamento, swipe para dispensar, timeout de 3s e limite de 3 toasts.
+- Variantes, com fundo e ícone:
+  - `success`: verde (`#166534`) + ícone de check;
+  - `warning`: laranja (`#9a3412`) + ícone de alerta;
+  - `error`: vermelho (`#991b1b`) + ícone de X;
+  - `default`: `#242424` (cor padrão do app), sem ícone.
+- Mapeamento atual das mensagens: sessão concluída, atividade alterada e preset criado → `success`; fase pulada → `warning`; temporizador reiniciado e pausa encerrada → `default`. A variante `error` está pronta para fluxos de erro; a validação do preset continua inline no modal.
+
+Verificado com Playwright: preset criado mostra toast verde com ícone no canto inferior direito e some em ~3s; pular fase mostra laranja; reiniciar mostra o padrão; erro via manager mostra vermelho com ícone; empilhamento e offset funcionam; sem erros de console.
+
 ## Verificação
 
 - `pnpm typecheck` — ok
