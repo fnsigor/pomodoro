@@ -7,18 +7,15 @@ import { TimerView } from './timer.view'
 
 export interface TimerPageProps {
   notificar: (mensagem: string) => void
-  /** Avisa o Shell para recalcular a streak quando uma sessão é registrada. */
-  aoRegistrarSessao?: () => void
 }
 
-export default function TimerPage({ notificar, aoRegistrarSessao }: TimerPageProps) {
+export default function TimerPage({ notificar }: TimerPageProps) {
   const methods = useTimerModel({
     sessaoRepo,
     atividadeRepo,
     presetRepo,
     relogio: relogioDoSistema,
     notificar,
-    aoRegistrarSessao,
   })
 
   useAtalhosTeclado(methods.atalhos)
