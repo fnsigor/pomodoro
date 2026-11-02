@@ -6,12 +6,12 @@ App de foco — temporizador estilo Pomodoro com atividades, histórico e meta d
 
 ## Usar agora
 
-- 🌐 **[Abrir o app web](https://focusflow-nine-iota.vercel.app)**
-- 📣 **[Conhecer o projeto](https://focusflow-nine-iota.vercel.app/open-source.html)** — página de divulgação, com recursos e um resumo de como contribuir
+- 🌐 **[Abrir o app web](https://focusflow-nine-iota.vercel.app/app)**
+- 📣 **[Conhecer o projeto](https://focusflow-nine-iota.vercel.app/)** — página de divulgação, com recursos, download e um resumo de como contribuir
 
 ## Baixar o app desktop
 
-👉 **[Página de download](https://focusflow-nine-iota.vercel.app/baixar.html)** — detecta seu sistema operacional (Windows/macOS/Linux) e já mostra o instalador certo, buscando sempre a versão mais recente.
+👉 **[Baixar o FocusFlow desktop](https://focusflow-nine-iota.vercel.app/#download)** — detecta seu sistema operacional (Windows/macOS/Linux) e mostra o instalador da versão mais recente.
 
 Prefere ir direto na fonte? [Última versão (Releases)](https://github.com/fnsigor/pomodoro/releases/latest). A página de release tem bastante arquivo — a maioria não é pra baixar. Use esta tabela:
 
