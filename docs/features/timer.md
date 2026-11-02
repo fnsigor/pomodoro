@@ -85,7 +85,7 @@ Verificado com Playwright em 650×800 e 1440×900: clicar em "Próximas opções
 
 ### 8. Tamanho dos ícones e cursor dos botões
 
-- `ControlButton` (reiniciar/pular) passou a dimensionar o SVG em **21px** (`[&_svg]:size-[21px]`), como no protótipo. Antes o SVG sem `width`/`height` herdava o tamanho intrínseco e ficava grande demais.
+- `ControlButton` (reiniciar) passou a dimensionar o SVG em **21px** (`[&_svg]:size-[21px]`), como no protótipo. Antes o SVG sem `width`/`height` herdava o tamanho intrínseco e ficava grande demais.
 - `PrimaryButton` (iniciar/pausar e "Criar preset" no modal) dimensiona o SVG em **19px** (`[&_svg]:size-[19px]`). Isso corrige também o ícone de play gigante que quebrava o layout do modal de novo preset.
 - Regra global em `styles.css` (`@layer base`): `button:enabled` e `[role="button"]:not([aria-disabled="true"])` usam `cursor: pointer`; `button:disabled` e `[role="button"][aria-disabled="true"]` usam `cursor: not-allowed`.
 - As setas do carrossel trocaram `disabled:cursor-default` por `disabled:cursor-not-allowed` para seguir a mesma regra.
@@ -111,15 +111,22 @@ Verificado com Playwright: aos 50ms o card está em `opacity ~0.67`, `scale ~0.9
   - `warning`: laranja (`#9a3412`) + ícone de alerta;
   - `error`: vermelho (`#991b1b`) + ícone de X;
   - `default`: `#242424` (cor padrão do app), sem ícone.
-- Mapeamento atual das mensagens: sessão concluída, atividade alterada e preset criado → `success`; fase pulada → `warning`; temporizador reiniciado e pausa encerrada → `default`. A variante `error` está pronta para fluxos de erro; a validação do preset continua inline no modal.
+- Mapeamento atual das mensagens: sessão concluída, atividade alterada e preset criado → `success`; temporizador reiniciado e pausa encerrada → `default`. As variantes `warning` e `error` ficam disponíveis para fluxos futuros; a validação do preset continua inline no modal.
 
-Verificado com Playwright: preset criado mostra toast verde com ícone no canto inferior direito e some em ~3s; pular fase mostra laranja; reiniciar mostra o padrão; erro via manager mostra vermelho com ícone; empilhamento e offset funcionam; sem erros de console.
+Verificado com Playwright: preset criado mostra toast verde com ícone no canto inferior direito e some em ~3s; reiniciar mostra o padrão; erro via manager mostra vermelho com ícone; empilhamento e offset funcionam; sem erros de console.
+
+### 11. "Pular fase" removido
+
+- O botão de pular fase saiu da tela do timer; sobraram reiniciar e iniciar/pausar/continuar.
+- Removidos também: atalho `S`, ícone `IconePular`, mensagem `fasePulada` e o evento `pular` da máquina de estados do core.
+- Consequência: não existe mais encerrar uma fase manualmente. `Reiniciar` continua registrando sessão `cancelada` quando há ≥ 1 min de foco; o fim natural da fase segue igual.
+- O toast `warning` (laranja) permanece implementado, mas sem uma mensagem que o dispare no momento.
 
 ## Verificação
 
 - `pnpm typecheck` — ok
 - `pnpm lint` — ok
-- `pnpm test` — 58 testes passando
+- `pnpm test` — 55 testes passando
 
 ## Pendências herdadas
 

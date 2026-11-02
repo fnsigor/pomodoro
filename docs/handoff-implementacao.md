@@ -44,7 +44,7 @@ interface EstadoTimer {
   inicioDaFase: EpochMs | null     // timestamp do 1º "iniciar" desta fase
 }
 type EventoTimer =
-  | { tipo: 'alternar' } | { tipo: 'reiniciar' } | { tipo: 'pular' } | { tipo: 'tick' }
+  | { tipo: 'alternar' } | { tipo: 'reiniciar' } | { tipo: 'tick' }
   | { tipo: 'trocarPreset'; preset: Preset }
 type EfeitoTimer =
   | { tipo: 'registrarSessao'; sessao: Pick<Sessao,'presetId'|'inicio'|'fim'|'duracaoSeg'|'status'> }
@@ -53,9 +53,9 @@ type EfeitoTimer =
 `transicionar(estado, evento, agora) → { estado, efeitos }`. A UI despacha `tick` periodicamente (ex. a cada 250ms) só para a máquina checar se a fase terminou — o tempo mostrado na tela vem sempre de `restanteMs`/`progresso` recalculados a partir de timestamp, nunca de contar ticks.
 
 **Decisões tomadas pelo agente do core, não 100% explícitas no CLAUDE.md (revisar com o Igor, mas já estão implementadas e testadas — não contradiga sem necessidade, ou vai precisar atualizar testes):**
-1. Só o **Pomodoro Clássico** entra em fase de pausa. Os demais presets (Livre, Sprint, Estendido, Deep Work) ficam sempre em `fase: 'foco'` — terminar/pular o foco deles reinicia um novo foco, sem pausa.
-2. No fim natural da fase, `Sessao.fim`/`duracaoSeg` usam a **duração nominal** do preset (não o timestamp real do `tick`, que pode estar atrasado com a aba em background). Em `pular`, usa o timestamp real do evento.
-3. `fimDeFase` é emitido mesmo quando a fase não muda (presets sem pausa) — serve para a UI tocar o som de fim de fase. No **Livre**, `pular` NÃO emite `fimDeFase` (é tratado como "zerar", não como transição de fase).
+1. Só o **Pomodoro Clássico** entra em fase de pausa. Os demais presets (Livre, Sprint, Estendido, Deep Work) ficam sempre em `fase: 'foco'` — terminar o foco deles reinicia um novo foco, sem pausa.
+2. No fim natural da fase, `Sessao.fim`/`duracaoSeg` usam a **duração nominal** do preset (não o timestamp real do `tick`, que pode estar atrasado com a aba em background).
+3. `fimDeFase` é emitido mesmo quando a fase não muda (presets sem pausa) — serve para a UI tocar o som de fim de fase.
 4. `pontosDoCiclo` durante a pausa: sessões já concluídas ficam `'feito'`, a próxima (`sessaoNoCiclo + 1`) fica `'atual'` como prévia.
 5. Evento `tick` fora de `status: 'rodando'` é no-op.
 
@@ -93,7 +93,7 @@ Lista de componentes e props principais (todas em `packages/ui/src/componentes/*
 | `Toast` | `{ mensagem: string \| null }` — `role="status"` |
 | `Modal` | `{ aberto, titulo, onFechar, children }` — `role="dialog"`, fecha com Esc/clique fora |
 
-Ícones em `packages/ui/src/icones.tsx`: `IconeRaio`, `IconeFogo`, `IconeSino`, `IconePlay`, `IconePause`, `IconeReiniciar`, `IconePular`, `IconeSetaEsquerda`, `IconeSetaDireita`, `IconeChevron`.
+Ícones em `packages/ui/src/icones.tsx`: `IconeRaio`, `IconeFogo`, `IconeSino`, `IconePlay`, `IconePause`, `IconeReiniciar`, `IconeSetaEsquerda`, `IconeSetaDireita`, `IconeChevron`.
 
 ### ✅ `packages/adapters/web` — completo, 18 testes passando
 
@@ -217,7 +217,7 @@ infra/useTituloDocumento.ts document.title = `MM:SS — FocusFlow` enquanto roda
 
 #### `timer.model.ts` — comportamento esperado
 
-`useReducer` (ou `useState` + função) sobre `transicionar` do core; `useEffect` com `setInterval` de ~250ms que só despacha `{ tipo: 'tick' }` com `agora = relogio.agora()` — nunca decrementa um contador por conta própria. Processa os `efeitos` devolvidos por `transicionar`: `registrarSessao` → monta um `Sessao` completo (`id: novoId()`, `atividadeId` da atividade ativa carregada) e chama `sessaoRepo.salvar`, depois recarrega o resumo do dia; `fimDeFase` → toca som (se ligado) e chama `notificar(mensagem)` via `timer.messages.ts`. Carrega atividades/presets personalizados/resumo do dia do repositório em `useEffect` inicial. Retorna objeto plano com pelo menos: tempo formatado (`formatarMMSS`), `progresso`, `fase`/rótulo, `pontos`, rótulo do botão principal (Iniciar Foco/Pausar Foco/Continuar/Iniciar Pausa — ver `timer.messages.ts`), lista de presets pro `PresetSelector` (fixos do core + personalizados do repo), atividade atual, dados pro `DailyGoalCard` (via `progressoDaMeta`), handlers (`alternar`, `reiniciar`, `pular`, `selecionarPreset`, `criarPresetPersonalizado`, `trocarAtividade`), atalhos (pra `useAtalhosTeclado`), título (pra `useTituloDocumento`).
+`useReducer` (ou `useState` + função) sobre `transicionar` do core; `useEffect` com `setInterval` de ~250ms que só despacha `{ tipo: 'tick' }` com `agora = relogio.agora()` — nunca decrementa um contador por conta própria. Processa os `efeitos` devolvidos por `transicionar`: `registrarSessao` → monta um `Sessao` completo (`id: novoId()`, `atividadeId` da atividade ativa carregada) e chama `sessaoRepo.salvar`, depois recarrega o resumo do dia; `fimDeFase` → toca som (se ligado) e chama `notificar(mensagem)` via `timer.messages.ts`. Carrega atividades/presets personalizados/resumo do dia do repositório em `useEffect` inicial. Retorna objeto plano com pelo menos: tempo formatado (`formatarMMSS`), `progresso`, `fase`/rótulo, `pontos`, rótulo do botão principal (Iniciar Foco/Pausar Foco/Continuar/Iniciar Pausa — ver `timer.messages.ts`), lista de presets pro `PresetSelector` (fixos do core + personalizados do repo), atividade atual, dados pro `DailyGoalCard` (via `progressoDaMeta`), handlers (`alternar`, `reiniciar`, `selecionarPreset`, `criarPresetPersonalizado`, `trocarAtividade`), atalhos (pra `useAtalhosTeclado`), título (pra `useTituloDocumento`).
 
 Teste `timer.model.test.ts`: `renderHook` com `criarRepositoriosEmMemoria()` de `@focusflow/core/testing` + relógio fake controlável — cenário mínimo: iniciar Pomodoro Clássico → avançar 25 min (sem passar por tick real, só mudando o `agora` do relógio fake e disparando os ticks do intervalo real do React, ou mockando `setInterval`) → sessão salva como `concluida`, resumo do dia atualizado, fase vira `pausa-curta`.
 

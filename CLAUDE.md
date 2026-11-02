@@ -113,7 +113,7 @@ Derivado do protótipo. Estas regras pertencem ao `core` como lógica pura, sem 
 
 **Ajuste de tempo:** regra anterior (−5 / +5 min, limites 5–120 min) **não aparece no protótipo atual**; o ajuste fino agora é feito criando preset personalizado. Não implementar os botões ±5 sem confirmação.
 
-**Controles:** iniciar/pausar/continuar, reiniciar, pular fase. Pular durante o foco registra no histórico o tempo já decorrido (arredondado para baixo); no modo livre, pular salva a sessão e zera.
+**Controles:** iniciar/pausar/continuar e reiniciar.
 
 **Registro:** só entra no histórico sessão com pelo menos 1 minuto. Concluir um foco incrementa o total do dia e a contagem de ciclos.
 
@@ -121,15 +121,15 @@ Derivado do protótipo. Estas regras pertencem ao `core` como lógica pura, sem 
 
 **Atividades:** lista com nome e cor. Uma atividade ativa por vez (card "Atividade atual" à direita dos presets); cada sessão registrada guarda a atividade. A tela Atividades mostra o total acumulado por atividade. *(A tela Atividades ainda não tem protótipo; montar com os mesmos componentes do Histórico.)*
 
-**Status da sessão:** o histórico distingue `CONCLUÍDO` (foco chegou ao fim) e `CANCELADO` (interrompida por reiniciar/pular antes do fim, com ≥ 1 min). A sessão também guarda o preset usado (coluna "Tipo": "Preset Clássico", "Modo Livre"...). Isso é campo no schema: seguir o fluxo de mudança de schema.
+**Status da sessão:** o histórico distingue `CONCLUÍDO` (foco chegou ao fim) e `CANCELADO` (interrompida por reiniciar antes do fim, com ≥ 1 min). A sessão também guarda o preset usado (coluna "Tipo": "Preset Clássico", "Modo Livre"...). Isso é campo no schema: seguir o fluxo de mudança de schema.
 
 **Histórico (tela):** filtros por período (`Dia` / `Semana` / `Mês` / `Ano`), por atividade e intervalo de datas; 4 cards de estatística (Tempo Total com variação vs período anterior, Ciclos Concluídos com média por dia, e foco por atividade com mini barra); gráfico de barras empilhadas por dia ("Distribuição de Tempo", eixo em horas); rosca "Por Atividade"; tabela "Sessões Recentes" (Data, Atividade, Duração, Tipo, Status). Todos os agregados são métodos nomeados do repositório (regra 4), não `filter`/`reduce` no core.
 
 **Streak:** pílula com ícone de fogo e "N dias" no cabeçalho.
 
-**Atalhos de teclado:** `Espaço` iniciar/pausar, `R` reiniciar, `S` pular fase, `←` `→` trocar modo. Ignorados quando o foco está em `input`/`textarea`; `Espaço` não dispara toggle se o foco estiver em um botão.
+**Atalhos de teclado:** `Espaço` iniciar/pausar, `R` reiniciar, `←` `→` trocar modo. Ignorados quando o foco está em `input`/`textarea`; `Espaço` não dispara toggle se o foco estiver em um botão.
 
-**Telas:** Temporizador, Histórico, Atividades (abas no cabeçalho). Título da aba/janela mostra o tempo restante enquanto roda (`MM:SS — FocusFlow`). Toast de confirmação nas ações (sessão concluída, reiniciado, fase pulada, atividade trocada).
+**Telas:** Temporizador, Histórico, Atividades (abas no cabeçalho). Título da aba/janela mostra o tempo restante enquanto roda (`MM:SS — FocusFlow`). Toast de confirmação nas ações (sessão concluída, reiniciado, atividade trocada).
 
 ### Sobre o protótipo
 
@@ -158,7 +158,6 @@ Mapa de componentes sugerido (nomes podem mudar, a divisão não):
 
 - Tirar a lógica do timer do DOM e modelá-la como máquina de estados pura em `core`, testável sem relógio real.
 - O countdown do protótipo já calcula o restante por timestamp, mas o modo livre conta ticks de `setInterval` (deriva em segundo plano). No app, **tudo** por timestamp (início + duração / início + decorrido).
-- No protótipo, "pular fase" só troca o rótulo e repõe a mesma duração; vale a regra de ciclo do `core` (pausa de 5/15 min).
 - O histórico do protótipo guarda texto ("Hoje, 14:30"). Persistir **timestamps** (ISO ou epoch) e formatar na UI.
 - Remover os dados de exemplo: streak "4 dias", "2h 15m / 56% / 3 ciclos", dados do gráfico, sessões da tabela, números das estatísticas, faixa "Out 23 - Out 29", lista de atividades do `activitySelect`. Tudo deriva do repositório.
 - O avatar aponta para imagem do Unsplash: não carregar imagem externa; usar placeholder local (iniciais) até existir perfil. O botão de notificações não tem comportamento definido: renderizar sem ação até haver decisão.
@@ -222,7 +221,7 @@ Cores de atividade são dados do usuário, não tokens de tema. Nos gráficos do
 - **Topbar:** grid de 3 colunas (marca | abas | ferramentas). Marca = ícone de raio em quadrado violeta 40px + "FocusFlow" em Space Grotesk 22/700 violeta. Abas em pílula escura com a ativa preenchida de `--primary`. À direita: streak, notificações, avatar com anel violeta.
 - **Seletor de presets:** caixas 72px; a selecionada cresce para 112px, sobe, ganha borda violeta, número 30px + unidade ("MINUTOS"/"LIVRE") e rótulo violeta. Setas ← → nas pontas; "+ Novo" tracejado ao final.
 - **Timer:** anel SVG de 368px, traço 8px, `stroke-linecap: round`, progresso em `--primary` sobre trilho escuro, começando no topo (rotação −90°). Dentro: rótulo da fase (14px, `letter-spacing: 3px`), 4 pontos, tempo, nome do modo (18px, `--muted`).
-- **Controles:** reiniciar e pular em quadrados 56px; botão principal 68px de altura, mín. 226px de largura, ícone + rótulo ("Iniciar Foco" / "Pausar Foco" / "Continuar" / "Iniciar Pausa").
+- **Controles:** reiniciar em quadrado 56px; botão principal 68px de altura, mín. 226px de largura, ícone + rótulo ("Iniciar Foco" / "Pausar Foco" / "Continuar" / "Iniciar Pausa").
 - **Cards inferiores:** grid 2 colunas (Meta Diária | Atalhos rápidos), 111px de altura.
 - **Histórico:** 4 stat cards em grid (2 colunas ≤ 1000px), gráficos em `2fr 1fr` (1 coluna ≤ 1000px), tabela com rolagem horizontal (mín. 650px).
 - **Toast:** central inferior, `#242424` com borda, raio 12px, `role="status"`.
