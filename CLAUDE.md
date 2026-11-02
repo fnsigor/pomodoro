@@ -109,7 +109,7 @@ Derivado do protótipo. Estas regras pertencem ao `core` como lógica pura, sem 
 | Deep Work | 60 min | `1h` | |
 | Personalizado | 1–240 min | valor | criado pelo botão "+ Novo"; vira preset do usuário (persistido no repositório) |
 
-**Ciclo do Pomodoro:** foco → pausa; pausa curta de 5 min, exceto após a 4ª sessão (pausa longa de 15 min); depois da 4ª, volta para a sessão 1. Rótulo da fase acima do tempo: `FASE DE FOCO` / `PAUSA CURTA` / `PAUSA LONGA`. Indicador de 4 pontos (feito / atual / pendente).
+**Ciclo do Pomodoro:** foco → pausa; pausa curta de 5 min, exceto após a 4ª sessão (pausa longa de 15 min); depois da 4ª, volta para a sessão 1. Rótulo da fase acima do tempo: `FASE DE FOCO` / `PAUSA CURTA` / `PAUSA LONGA`.
 
 **Ajuste de tempo:** regra anterior (−5 / +5 min, limites 5–120 min) **não aparece no protótipo atual**; o ajuste fino agora é feito criando preset personalizado. Não implementar os botões ±5 sem confirmação.
 
@@ -145,7 +145,7 @@ Mapa de componentes sugerido (nomes podem mudar, a divisão não):
 | `.ready` | `StatusBadge` ("Pronto para começar") |
 | `.presets`, `.preset`, `.arrow` | `PresetSelector`, `PresetCard` (normal / selecionado / adicionar) |
 | `.activity` | `ActivitySelect` |
-| `.timer-ring`, `.phase`, `.dots`, `.time`, `.mode-name` | `TimerRing`, `PhaseLabel`, `CycleDots`, `TimeDisplay` |
+| `.timer-ring`, `.phase`, `.time`, `.mode-name` | `TimerRing`, `PhaseLabel`, `TimeDisplay` |
 | `.controls`, `.control-btn`, `.start-btn` | `TimerControls`, `ControlButton`, `PrimaryButton` |
 | `.panel` (meta) / `.shortcuts`, `.key` | `DailyGoalCard`, `ShortcutsCard`, `Kbd` |
 | `.segmented`, `.filter-btn` | `SegmentedControl`, `FilterButton` |
@@ -187,7 +187,7 @@ Implementado com **Tailwind v4** (`@tailwindcss/vite`). Tokens e fontes ficam em
 | --- | --- | --- |
 | `--bg` | `#0A0A0A` rgb(10,10,10) | Fundo principal (Deep Black) |
 | `--panel` | `#1A1A1A` rgb(26,26,26) | Cards e painéis (Charcoal) |
-| `--primary` | `#8B5CF6` rgb(139,92,246) | Violeta ativo: aba ativa, preset selecionado, anel, botão principal, barras, pontos |
+| `--primary` | `#8B5CF6` rgb(139,92,246) | Violeta ativo: aba ativa, preset selecionado, anel, botão principal, barras |
 | `--primary-soft` | `#A78BFA` rgb(167,139,250) | Violeta suave: teclas de atalho, segunda série nos gráficos |
 | `--muted` | `#9CA3AF` rgb(156,163,175) | Texto secundário / desabilitado, ícones de controle |
 | `--ink` | `#FFFFFF` | Texto principal |
@@ -201,7 +201,7 @@ Neutros auxiliares que o protótipo usa (consolidar os cinzas quase idênticos n
 | `--panel-2` | `#171717` | Superfícies rebaixadas (preset selecionado; `#151515`/`#191919`/`#1B1B1B` caem aqui ou em `--panel`) |
 | `--panel-sunken` | `#0D0D0D` | Caixa de preset não selecionado |
 | `--border` | `#282828` | Borda de cards, nav, botões (`#252525`–`#292929`) |
-| `--track` | `#292929` | Trilho do anel/barras de progresso, pontos pendentes, linhas de grade (o anel usa `#1C1C1C`) |
+| `--track` | `#292929` | Trilho do anel/barras de progresso, linhas de grade (o anel usa `#1C1C1C`) |
 | `--border-strong` | `#363636` | Borda de `Kbd` e toast |
 | `--primary-hover` | `#9569F7` | Hover do botão principal |
 | `--primary-tint` | `#282033` | Fundo dos ícones dos stat cards |
@@ -220,7 +220,7 @@ Cores de atividade são dados do usuário, não tokens de tema. Nos gráficos do
 
 - **Topbar:** grid de 3 colunas (marca | abas | ferramentas). Marca = ícone de raio em quadrado violeta 40px + "FocusFlow" em Space Grotesk 22/700 violeta. Abas em pílula escura com a ativa preenchida de `--primary`. À direita: streak, notificações, avatar com anel violeta.
 - **Seletor de presets:** caixas 72px; a selecionada cresce para 112px, sobe, ganha borda violeta, número 30px + unidade ("MINUTOS"/"LIVRE") e rótulo violeta. Setas ← → nas pontas; "+ Novo" tracejado ao final.
-- **Timer:** anel SVG de 368px, traço 8px, `stroke-linecap: round`, progresso em `--primary` sobre trilho escuro, começando no topo (rotação −90°). Dentro: rótulo da fase (14px, `letter-spacing: 3px`), 4 pontos, tempo, nome do modo (18px, `--muted`).
+- **Timer:** anel SVG de 368px, traço 8px, `stroke-linecap: round`, progresso em `--primary` sobre trilho escuro, começando no topo (rotação −90°). Dentro: rótulo da fase (14px, `letter-spacing: 3px`), tempo, nome do modo (18px, `--muted`).
 - **Controles:** reiniciar em quadrado 56px; botão principal 68px de altura, mín. 226px de largura, ícone + rótulo ("Iniciar Foco" / "Pausar Foco" / "Continuar" / "Iniciar Pausa").
 - **Cards inferiores:** grid 2 colunas (Meta Diária | Atalhos rápidos), 111px de altura.
 - **Histórico:** 4 stat cards em grid (2 colunas ≤ 1000px), gráficos em `2fr 1fr` (1 coluna ≤ 1000px), tabela com rolagem horizontal (mín. 650px).

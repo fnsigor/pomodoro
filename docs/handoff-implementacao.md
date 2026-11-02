@@ -30,7 +30,7 @@ apps/desktop/            package.json                         → pronto (falta 
 
 35 testes passando, `tsc --noEmit` e `eslint` limpos. TS puro, sem nenhuma dependência de plataforma (lint de fronteira garante isso — ver "Regras de lint" abaixo).
 
-Exports (`packages/core/src/index.ts`): `dominio.ts` (`Id`, `EpochMs`, `Fase`, `StatusSessao`, `Atividade`, `Preset`, `Sessao`), `presets.ts` (`PRESETS_FIXOS`, `PRESET_PADRAO_ID='pomodoro'`, `SESSOES_POR_CICLO=4`, `PAUSA_CURTA_MIN=5`, `PAUSA_LONGA_MIN=15`, `MINUTOS_PERSONALIZADO={min:1,max:240}`), `timer/maquina.ts` (`EstadoTimer`, `EventoTimer`, `EfeitoTimer`, `estadoInicial(preset)`, `transicionar(estado, evento, agora)`), `timer/seletores.ts` (`duracaoDaFaseMs`, `decorridoMs`, `restanteMs`, `progresso`, `pontosDoCiclo`, `rotuloFase`), `meta.ts` (`META_DIARIA_MIN=240`, `progressoDaMeta(totalSeg)`), `streak.ts` (`calcularStreak(diasComFoco, hoje)`), `tempo.ts` (`intervaloDoDia`, `chaveDoDia`, `formatarMMSS`, `formatarHorasMin`, `formatarDuracaoCurta`), `repositorios.ts` (interfaces `SessaoRepository`, `AtividadeRepository`, `PresetRepository`, `IntervaloTempo`, `ResumoDoDia`), `relogio.ts` (`Relogio`), `id.ts` (`novoId()`, UUID v7). Subpath separado `@focusflow/core/testing` → `criarRepositoriosEmMemoria(seed?)`.
+Exports (`packages/core/src/index.ts`): `dominio.ts` (`Id`, `EpochMs`, `Fase`, `StatusSessao`, `Atividade`, `Preset`, `Sessao`), `presets.ts` (`PRESETS_FIXOS`, `PRESET_PADRAO_ID='pomodoro'`, `SESSOES_POR_CICLO=4`, `PAUSA_CURTA_MIN=5`, `PAUSA_LONGA_MIN=15`, `MINUTOS_PERSONALIZADO={min:1,max:240}`), `timer/maquina.ts` (`EstadoTimer`, `EventoTimer`, `EfeitoTimer`, `estadoInicial(preset)`, `transicionar(estado, evento, agora)`), `timer/seletores.ts` (`duracaoDaFaseMs`, `decorridoMs`, `restanteMs`, `progresso`, `rotuloFase`), `meta.ts` (`META_DIARIA_MIN=240`, `progressoDaMeta(totalSeg)`), `streak.ts` (`calcularStreak(diasComFoco, hoje)`), `tempo.ts` (`intervaloDoDia`, `chaveDoDia`, `formatarMMSS`, `formatarHorasMin`, `formatarDuracaoCurta`), `repositorios.ts` (interfaces `SessaoRepository`, `AtividadeRepository`, `PresetRepository`, `IntervaloTempo`, `ResumoDoDia`), `relogio.ts` (`Relogio`), `id.ts` (`novoId()`, UUID v7). Subpath separado `@focusflow/core/testing` → `criarRepositoriosEmMemoria(seed?)`.
 
 **`EstadoTimer` real** (confira antes de usar em `packages/app`, os nomes de campo são estes, não os do rascunho original do plano):
 ```ts
@@ -56,8 +56,7 @@ type EfeitoTimer =
 1. Só o **Pomodoro Clássico** entra em fase de pausa. Os demais presets (Livre, Sprint, Estendido, Deep Work) ficam sempre em `fase: 'foco'` — terminar o foco deles reinicia um novo foco, sem pausa.
 2. No fim natural da fase, `Sessao.fim`/`duracaoSeg` usam a **duração nominal** do preset (não o timestamp real do `tick`, que pode estar atrasado com a aba em background).
 3. `fimDeFase` é emitido mesmo quando a fase não muda (presets sem pausa) — serve para a UI tocar o som de fim de fase.
-4. `pontosDoCiclo` durante a pausa: sessões já concluídas ficam `'feito'`, a próxima (`sessaoNoCiclo + 1`) fica `'atual'` como prévia.
-5. Evento `tick` fora de `status: 'rodando'` é no-op.
+4. Evento `tick` fora de `status: 'rodando'` é no-op.
 
 ### ✅ `packages/ui` — completo
 
@@ -81,7 +80,6 @@ Lista de componentes e props principais (todas em `packages/ui/src/componentes/*
 | `ActivitySelect` | `{ rotulo, nome, corDot, onClick }` — **só o botão**; o menu dropdown (`listbox`) fica para quem consumir, junto com `Modal` (TODO explícito no componente) |
 | `TimerRing` | `{ progresso: number (0-1), tamanho?=368, cor?, ariaLabel, children? }` — `role="timer"` |
 | `PhaseLabel` | `{ texto: string }` |
-| `CycleDots` | `{ pontos: Array<'feito'\|'atual'\|'pendente'> }` |
 | `TimeDisplay` | `{ texto: string }` |
 | `ControlButton` | `{ icone, ariaLabel, title?, onClick }` |
 | `PrimaryButton` | `{ icone, rotulo, onClick, disabled? }` |
@@ -217,7 +215,7 @@ infra/useTituloDocumento.ts document.title = `MM:SS — FocusFlow` enquanto roda
 
 #### `timer.model.ts` — comportamento esperado
 
-`useReducer` (ou `useState` + função) sobre `transicionar` do core; `useEffect` com `setInterval` de ~250ms que só despacha `{ tipo: 'tick' }` com `agora = relogio.agora()` — nunca decrementa um contador por conta própria. Processa os `efeitos` devolvidos por `transicionar`: `registrarSessao` → monta um `Sessao` completo (`id: novoId()`, `atividadeId` da atividade ativa carregada) e chama `sessaoRepo.salvar`, depois recarrega o resumo do dia; `fimDeFase` → toca som (se ligado) e chama `notificar(mensagem)` via `timer.messages.ts`. Carrega atividades/presets personalizados/resumo do dia do repositório em `useEffect` inicial. Retorna objeto plano com pelo menos: tempo formatado (`formatarMMSS`), `progresso`, `fase`/rótulo, `pontos`, rótulo do botão principal (Iniciar Foco/Pausar Foco/Continuar/Iniciar Pausa — ver `timer.messages.ts`), lista de presets pro `PresetSelector` (fixos do core + personalizados do repo), atividade atual, dados pro `DailyGoalCard` (via `progressoDaMeta`), handlers (`alternar`, `reiniciar`, `selecionarPreset`, `criarPresetPersonalizado`, `trocarAtividade`), atalhos (pra `useAtalhosTeclado`), título (pra `useTituloDocumento`).
+`useReducer` (ou `useState` + função) sobre `transicionar` do core; `useEffect` com `setInterval` de ~250ms que só despacha `{ tipo: 'tick' }` com `agora = relogio.agora()` — nunca decrementa um contador por conta própria. Processa os `efeitos` devolvidos por `transicionar`: `registrarSessao` → monta um `Sessao` completo (`id: novoId()`, `atividadeId` da atividade ativa carregada) e chama `sessaoRepo.salvar`, depois recarrega o resumo do dia; `fimDeFase` → toca som (se ligado) e chama `notificar(mensagem)` via `timer.messages.ts`. Carrega atividades/presets personalizados/resumo do dia do repositório em `useEffect` inicial. Retorna objeto plano com pelo menos: tempo formatado (`formatarMMSS`), `progresso`, `fase`/rótulo, rótulo do botão principal (Iniciar Foco/Pausar Foco/Continuar/Iniciar Pausa — ver `timer.messages.ts`), lista de presets pro `PresetSelector` (fixos do core + personalizados do repo), atividade atual, dados pro `DailyGoalCard` (via `progressoDaMeta`), handlers (`alternar`, `reiniciar`, `selecionarPreset`, `criarPresetPersonalizado`, `trocarAtividade`), atalhos (pra `useAtalhosTeclado`), título (pra `useTituloDocumento`).
 
 Teste `timer.model.test.ts`: `renderHook` com `criarRepositoriosEmMemoria()` de `@focusflow/core/testing` + relógio fake controlável — cenário mínimo: iniciar Pomodoro Clássico → avançar 25 min (sem passar por tick real, só mudando o `agora` do relógio fake e disparando os ticks do intervalo real do React, ou mockando `setInterval`) → sessão salva como `concluida`, resumo do dia atualizado, fase vira `pausa-curta`.
 

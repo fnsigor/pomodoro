@@ -122,11 +122,18 @@ Verificado com Playwright: preset criado mostra toast verde com ícone no canto 
 - Consequência: não existe mais encerrar uma fase manualmente. `Reiniciar` continua registrando sessão `cancelada` quando há ≥ 1 min de foco; o fim natural da fase segue igual.
 - O toast `warning` (laranja) permanece implementado, mas sem uma mensagem que o dispare no momento.
 
+### 12. Indicador de pontos do ciclo removido
+
+- O componente `CycleDots` foi removido de `packages/ui` e do `TimerRing`.
+- `pontosDoCiclo` saiu do core (e dos testes de `seletores`), e `pontos` saiu do retorno do `useTimerModel` e das props do `TimerView`.
+- Motivo: o indicador só tem significado no Pomodoro Clássico, mas era exibido em todos os presets.
+- O ciclo interno (`sessaoNoCiclo`) continua existindo para controlar pausas curtas/longas; o que saiu foi apenas o indicador visual.
+
 ## Verificação
 
 - `pnpm typecheck` — ok
 - `pnpm lint` — ok
-- `pnpm test` — 55 testes passando
+- `pnpm test` — 52 testes passando
 
 ## Pendências herdadas
 
