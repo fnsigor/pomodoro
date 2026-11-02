@@ -11,7 +11,6 @@ function criarProps(sobrescritas: Partial<TimerViewProps> = {}): TimerViewProps 
     progresso: 0,
     fase: 'FASE DE FOCO',
     pontos: ['atual', 'pendente', 'pendente', 'pendente'],
-    pronto: true,
     rotuloBotao: 'Iniciar Foco',
     legendaAtalhos: [
       { tecla: 'Space', descricao: 'Iniciar ou pausar' },
@@ -56,15 +55,13 @@ describe('TimerView', () => {
 
     expect(screen.getByRole('timer')).toHaveAttribute('aria-label', 'FASE DE FOCO, 25:00 restante')
     expect(screen.getByText('25:00')).toBeInTheDocument()
-    expect(screen.getByText('Pronto para começar')).toBeInTheDocument()
     expect(screen.getByRole('button', { name: 'Iniciar Foco' })).toBeInTheDocument()
     expect(screen.getByRole('radiogroup', { name: 'Duração do temporizador' })).toBeInTheDocument()
   })
 
-  it('esconde o status "pronto" quando o timer está rodando', () => {
-    render(<TimerView {...criarProps({ pronto: false, rotuloBotao: 'Pausar Foco' })} />)
+  it('mostra o rótulo de pausar quando o timer está rodando', () => {
+    render(<TimerView {...criarProps({ rotuloBotao: 'Pausar Foco' })} />)
 
-    expect(screen.queryByText('Pronto para começar')).not.toBeInTheDocument()
     expect(screen.getByRole('button', { name: 'Pausar Foco' })).toBeInTheDocument()
   })
 })

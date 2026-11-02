@@ -37,8 +37,6 @@ export interface TimerModelProps {
   presetRepo: PresetRepository
   relogio: Relogio
   notificar: (mensagem: string) => void
-  /** Avisa o Shell para recalcular a streak quando uma sessão é registrada. */
-  aoRegistrarSessao?: () => void
 }
 
 // PRESETS_FIXOS sempre tem ao menos o Pomodoro Clássico (constante do core) — invariante garantida.
@@ -63,7 +61,6 @@ export function useTimerModel({
   presetRepo,
   relogio,
   notificar,
-  aoRegistrarSessao,
 }: TimerModelProps) {
   const [estado, setEstado] = useState<EstadoTimer>(() => estadoInicial(PRESET_PADRAO))
   // Mantido em dia só por `despachar` (nunca no corpo do render) — único
@@ -124,9 +121,8 @@ export function useTimerModel({
       const sessao: Sessao = { id: novoId(), atividadeId: atividade.id, ...dados }
       await sessaoRepo.salvar(sessao)
       await carregarResumoDoDia()
-      aoRegistrarSessao?.()
     },
-    [sessaoRepo, carregarResumoDoDia, aoRegistrarSessao],
+    [sessaoRepo, carregarResumoDoDia],
   )
 
   const processarEfeitos = useCallback(
@@ -267,7 +263,6 @@ export function useTimerModel({
   const progressoAtual = progresso(estado, agora)
   const pontos = pontosDoCiclo(estado)
   const fase = rotuloFase(estado.fase)
-  const pronto = estado.status === 'ocioso'
 
   const rotuloBotao =
     estado.status === 'pausado'
@@ -295,7 +290,6 @@ export function useTimerModel({
     progresso: progressoAtual,
     fase,
     pontos,
-    pronto,
     rotuloBotao,
     legendaAtalhos: TIMER_ATALHOS,
     presets: presetsParaTela,

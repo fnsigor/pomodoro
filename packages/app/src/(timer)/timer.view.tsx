@@ -2,7 +2,7 @@ import {
   ActivitySelect,
   ControlButton,
   CycleDots,
-  DailyGoalCard,
+ // DailyGoalCard,
   IconeReiniciar,
   IconePause,
   IconePlay,
@@ -11,8 +11,7 @@ import {
   PhaseLabel,
   PresetSelector,
   PrimaryButton,
-  ShortcutsCard,
-  StatusBadge,
+ // ShortcutsCard,
   TimeDisplay,
   TimerRing,
 } from '@focusflow/ui'
@@ -27,9 +26,8 @@ export function TimerView(props: TimerViewProps) {
     progresso,
     fase,
     pontos,
-    pronto,
     rotuloBotao,
-    legendaAtalhos,
+   // legendaAtalhos,
     presets,
     presetSelecionadoId,
     selecionarPreset,
@@ -48,7 +46,7 @@ export function TimerView(props: TimerViewProps) {
     fecharModalPreset,
     aoMudarNovoPresetValor,
     confirmarNovoPreset,
-    meta,
+  //  meta,
     alternar,
     reiniciar,
     pular,
@@ -58,9 +56,10 @@ export function TimerView(props: TimerViewProps) {
   const iconeBotao = rotuloBotao === TIMER_ROTULO_BOTAO.pausarFoco ? <IconePause /> : <IconePlay />
 
   return (
-    <div className="flex flex-1 flex-col">
-      <div className="mt-12 grid grid-cols-[1fr_auto_1fr] items-start gap-6 max-tablet:grid-cols-1 max-tablet:justify-items-center max-tablet:gap-[26px]">
-        {pronto ? <StatusBadge texto="Pronto para começar" /> : <div aria-hidden="true" />}
+    <div className="flex min-h-0 flex-1 flex-col">
+      <div className="mt-4 grid grid-cols-[1fr_auto_1fr] items-start gap-6 max-tablet:grid-cols-1 max-tablet:justify-items-center max-tablet:gap-[26px]">
+        {/* Espaçador: mantém o seletor de presets na coluna central do grid. */}
+        <div aria-hidden="true" className="max-tablet:hidden" />
         <PresetSelector
           presets={presets}
           selecionadoId={presetSelecionadoId}
@@ -77,7 +76,7 @@ export function TimerView(props: TimerViewProps) {
         />
       </div>
 
-      <div className="mt-[10px] flex min-h-[430px] flex-1 flex-col items-center justify-center">
+      <div className="mt-[10px] flex min-h-0 flex-1 flex-col items-center justify-center">
         <TimerRing progresso={progresso} ariaLabel={`${fase}, ${tempo} restante`}>
           <PhaseLabel texto={fase} />
           <CycleDots pontos={pontos} />
@@ -87,14 +86,14 @@ export function TimerView(props: TimerViewProps) {
           </div>
         </TimerRing>
 
-        <div className="mt-[35px] flex items-center gap-6 max-mobile:gap-4">
+        <div className="mt-7 flex items-center gap-6 max-mobile:gap-4">
           <ControlButton icone={<IconeReiniciar />} ariaLabel="Reiniciar" title="Reiniciar (R)" onClick={reiniciar} />
           <PrimaryButton icone={iconeBotao} rotulo={rotuloBotao} onClick={alternar} />
           <ControlButton icone={<IconePular />} ariaLabel="Pular fase" title="Pular fase (S)" onClick={pular} />
         </div>
       </div>
 
-      <div className="mt-[10px] grid grid-cols-2 gap-6 max-tablet:grid-cols-1">
+      {/* <div className="mt-[10px] grid grid-cols-2 gap-6 max-tablet:grid-cols-1">
         <DailyGoalCard
           valorPrincipal={meta.valorPrincipal}
           valorMeta={meta.valorMeta}
@@ -102,7 +101,7 @@ export function TimerView(props: TimerViewProps) {
           percentual={meta.percentual}
         />
         <ShortcutsCard atalhos={[...legendaAtalhos]} />
-      </div>
+      </div> */}
 
       <Modal aberto={modalAtividadeAberta} titulo="Selecionar atividade" onFechar={fecharModalAtividade}>
         <ul role="listbox" aria-label="Atividades" className="flex flex-col gap-2">
