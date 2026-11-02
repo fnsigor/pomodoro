@@ -2,6 +2,7 @@ export * from './componentes/ActivitySelect';
 export * from './componentes/Avatar';
 export * from './componentes/Brand';
 export * from './componentes/Card';
+export * from './componentes/Carousel';
 export * from './componentes/ControlButton';
 export * from './componentes/CycleDots';
 export * from './componentes/DailyGoalCard';

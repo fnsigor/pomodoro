@@ -1,4 +1,13 @@
-import { IconeSetaDireita, IconeSetaEsquerda } from '../icones';
+import { useEffect, useState } from 'react';
+import { useReducedMotion } from 'motion/react';
+import {
+  Carousel,
+  type CarouselApi,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from './Carousel';
 import { PresetCard } from './PresetCard';
 
 export interface Preset {
@@ -12,62 +21,63 @@ export interface PresetSelectorProps {
   presets: Preset[];
   selecionadoId: string;
   onSelecionar: (id: string) => void;
-  onAnterior: () => void;
-  onProximo: () => void;
   onNovoPreset: () => void;
 }
 
 /**
- * Carrossel horizontal de presets de duração. Abaixo de 621px (mobile) as
- * setas somem e a lista vira scroll horizontal, como no protótipo.
+ * Carrossel horizontal de presets. As setas movem apenas a lista; a seleção
+ * acontece clicando no card (animação do Motion) ou pelos atalhos de teclado.
+ * Abaixo de 621px as setas somem e o arraste horizontal assume.
  */
-export function PresetSelector({
-  presets,
-  selecionadoId,
-  onSelecionar,
-  onAnterior,
-  onProximo,
-  onNovoPreset,
-}: PresetSelectorProps) {
+export function PresetSelector({ presets, selecionadoId, onSelecionar, onNovoPreset }: PresetSelectorProps) {
+  const [api, setApi] = useState<CarouselApi>();
+  const reduzirMovimento = useReducedMotion() ?? false;
+  const indiceSelecionado = presets.findIndex((preset) => preset.id === selecionadoId);
+
+  useEffect(() => {
+    if (!api || indiceSelecionado < 0) return;
+    const slide = api.slideNodes()[indiceSelecionado];
+    if (!slide) return;
+    const slideRect = slide.getBoundingClientRect();
+    if (slideRect.width === 0) return;
+    const containerRect = api.containerNode().getBoundingClientRect();
+    const naBorda =
+      slideRect.left < containerRect.left + 24 || slideRect.right > containerRect.right - 24;
+    if (naBorda) api.scrollTo(indiceSelecionado, reduzirMovimento);
+  }, [api, indiceSelecionado, reduzirMovimento]);
+
   return (
-    <div
-      role="radiogroup"
-      aria-label="Duração do temporizador"
-      className="flex items-start gap-6 max-tablet:gap-3 max-mobile:w-full max-mobile:gap-2 max-mobile:overflow-x-auto max-mobile:px-1 max-mobile:pb-2 max-mobile:pt-6"
-    >
-      <button
-        type="button"
-        aria-label="Opções anteriores"
-        onClick={onAnterior}
-        className="mt-[17px] grid h-[72px] w-8 shrink-0 place-items-center text-muted max-mobile:hidden"
+    <div role="radiogroup" aria-label="Duração do temporizador" className="w-[620px] max-w-full">
+      <Carousel
+        setApi={setApi}
+        opts={{ align: 'start', watchSlides: true }}
+        className="flex w-full items-center gap-6 max-mobile:gap-2"
       >
-        <IconeSetaEsquerda className="h-5 w-5" />
-      </button>
-      {presets.map((preset) => (
-        <PresetCard
-          key={preset.id}
-          rotulo={preset.rotulo}
-          valorCurto={preset.valorCurto}
-          unidade={preset.id === selecionadoId ? preset.unidade : undefined}
-          variante={preset.id === selecionadoId ? 'selecionado' : 'normal'}
-          onClick={() => onSelecionar(preset.id)}
-        />
-      ))}
-      <PresetCard
-        rotulo="Novo"
-        valorCurto="+"
-        variante="adicionar"
-        ariaLabel="Adicionar novo preset personalizado"
-        onClick={onNovoPreset}
-      />
-      <button
-        type="button"
-        aria-label="Próximas opções"
-        onClick={onProximo}
-        className="mt-[17px] grid h-[72px] w-8 shrink-0 place-items-center text-muted max-mobile:hidden"
-      >
-        <IconeSetaDireita className="h-5 w-5" />
-      </button>
+        <CarouselPrevious />
+        <CarouselContent>
+          {presets.map((preset) => (
+            <CarouselItem key={preset.id}>
+              <PresetCard
+                rotulo={preset.rotulo}
+                valorCurto={preset.valorCurto}
+                unidade={preset.id === selecionadoId ? preset.unidade : undefined}
+                variante={preset.id === selecionadoId ? 'selecionado' : 'normal'}
+                onClick={() => onSelecionar(preset.id)}
+              />
+            </CarouselItem>
+          ))}
+          <CarouselItem>
+            <PresetCard
+              rotulo="Novo"
+              valorCurto="+"
+              variante="adicionar"
+              ariaLabel="Adicionar novo preset personalizado"
+              onClick={onNovoPreset}
+            />
+          </CarouselItem>
+        </CarouselContent>
+        <CarouselNext />
+      </Carousel>
     </div>
   );
 }

@@ -31,8 +31,6 @@ export function TimerView(props: TimerViewProps) {
     presets,
     presetSelecionadoId,
     selecionarPreset,
-    modoAnterior,
-    modoProximo,
     atividades,
     atividadeAtual,
     modalAtividadeAberta,
@@ -64,8 +62,6 @@ export function TimerView(props: TimerViewProps) {
           presets={presets}
           selecionadoId={presetSelecionadoId}
           onSelecionar={selecionarPreset}
-          onAnterior={modoAnterior}
-          onProximo={modoProximo}
           onNovoPreset={abrirModalPreset}
         />
         <ActivitySelect
