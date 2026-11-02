@@ -10,7 +10,6 @@ function criarProps(sobrescritas: Partial<TimerViewProps> = {}): TimerViewProps 
     tempo: '25:00',
     progresso: 0,
     fase: 'FASE DE FOCO',
-    pontos: ['atual', 'pendente', 'pendente', 'pendente'],
     rotuloBotao: 'Iniciar Foco',
     legendaAtalhos: [
       { tecla: 'Space', descricao: 'Iniciar ou pausar' },

@@ -7,7 +7,6 @@ import {
   formatarHorasMin,
   intervaloDoDia,
   novoId,
-  pontosDoCiclo,
   progresso,
   progressoDaMeta,
   restanteMs,
@@ -255,7 +254,6 @@ export function useTimerModel({
   const restante = restanteMs(estado, agora)
   const tempo = formatarMMSS(restante)
   const progressoAtual = progresso(estado, agora)
-  const pontos = pontosDoCiclo(estado)
   const fase = rotuloFase(estado.fase)
 
   const rotuloBotao =
@@ -283,7 +281,6 @@ export function useTimerModel({
     tempo,
     progresso: progressoAtual,
     fase,
-    pontos,
     rotuloBotao,
     legendaAtalhos: TIMER_ATALHOS,
     presets: presetsParaTela,

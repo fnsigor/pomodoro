@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest'
 import type { Preset } from '../dominio'
 import { PRESETS_FIXOS } from '../presets'
 import { estadoInicial, transicionar } from './maquina'
-import { pontosDoCiclo, progresso, rotuloFase } from './seletores'
+import { progresso, rotuloFase } from './seletores'
 
 const presetPorId = (id: string): Preset => {
   const p = PRESETS_FIXOS.find((p) => p.id === id)
@@ -40,22 +40,5 @@ describe('rotuloFase', () => {
     expect(rotuloFase('foco')).toBe('FASE DE FOCO')
     expect(rotuloFase('pausa-curta')).toBe('PAUSA CURTA')
     expect(rotuloFase('pausa-longa')).toBe('PAUSA LONGA')
-  })
-})
-
-describe('pontosDoCiclo', () => {
-  it('no Livre devolve o 1º atual e os demais pendentes', () => {
-    const estado = estadoInicial(LIVRE)
-    expect(pontosDoCiclo(estado)).toEqual(['atual', 'pendente', 'pendente', 'pendente'])
-  })
-
-  it('no Pomodoro, marca as sessões já feitas e a atual durante o foco', () => {
-    const estado = { ...estadoInicial(POMODORO), sessaoNoCiclo: 3 as const }
-    expect(pontosDoCiclo(estado)).toEqual(['feito', 'feito', 'atual', 'pendente'])
-  })
-
-  it('no Pomodoro, durante a pausa marca a sessão concluída como feita e a próxima como atual', () => {
-    const estado = { ...estadoInicial(POMODORO), fase: 'pausa-curta' as const, sessaoNoCiclo: 2 as const }
-    expect(pontosDoCiclo(estado)).toEqual(['feito', 'feito', 'atual', 'pendente'])
   })
 })

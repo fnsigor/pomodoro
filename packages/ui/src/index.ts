@@ -4,7 +4,6 @@ export * from './componentes/Brand';
 export * from './componentes/Card';
 export * from './componentes/Carousel';
 export * from './componentes/ControlButton';
-export * from './componentes/CycleDots';
 export * from './componentes/DailyGoalCard';
 export * from './componentes/IconButton';
 export * from './componentes/Kbd';

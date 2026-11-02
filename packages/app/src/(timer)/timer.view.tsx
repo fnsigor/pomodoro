@@ -1,7 +1,6 @@
 import {
   ActivitySelect,
   ControlButton,
-  CycleDots,
  // DailyGoalCard,
   IconeReiniciar,
   IconePause,
@@ -24,7 +23,6 @@ export function TimerView(props: TimerViewProps) {
     tempo,
     progresso,
     fase,
-    pontos,
     rotuloBotao,
    // legendaAtalhos,
     presets,
@@ -73,7 +71,6 @@ export function TimerView(props: TimerViewProps) {
       <div className="mt-[10px] flex min-h-0 flex-1 flex-col items-center justify-center">
         <TimerRing progresso={progresso} ariaLabel={`${fase}, ${tempo} restante`}>
           <PhaseLabel texto={fase} />
-          <CycleDots pontos={pontos} />
           <TimeDisplay texto={tempo} />
           <div className="mt-[15px] font-sans text-lg text-muted max-mobile:mt-[15px] max-mobile:text-[15px]">
             {presetAtual?.rotulo ?? ''}
