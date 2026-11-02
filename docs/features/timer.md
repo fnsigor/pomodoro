@@ -92,6 +92,15 @@ Verificado com Playwright em 650×800 e 1440×900: clicar em "Próximas opções
 
 Verificado com Playwright: todos os botões habilitados retornam `cursor: pointer` e os desabilitados `cursor: not-allowed`; ícones medem 21px/19px; modal de preset sem quebra de layout e página continua sem scroll em 320–1440px.
 
+### 9. Animação de entrada e saída dos modais
+
+- `Modal` agora usa `AnimatePresence` + `motion.div` (Motion) e permanece montado durante a animação de saída; o `return null` anterior não permitia animar o fechamento.
+- Fundo: fade de `0.18s` (`easeOut`). Card: spring (`stiffness: 420`, `damping: 34`, `mass: 0.8`) partindo de `opacity: 0`, `scale: 0.96` e `y: 8`, com a saída invertida.
+- `useReducedMotion` zera as durações quando `prefers-reduced-motion` está ativo.
+- Vale para os dois modais do app (selecionar atividade e criar preset); fechar por `Esc` ou clique no fundo continua funcionando.
+
+Verificado com Playwright: aos 50ms o card está em `opacity ~0.67`, `scale ~0.987` e o fundo em `~0.71`; estabiliza em ~450ms; após fechar, o modal sai do DOM ao fim da animação. Com `reducedMotion: reduce`, abre e fecha instantaneamente. Sem erros de console.
+
 ## Verificação
 
 - `pnpm typecheck` — ok
