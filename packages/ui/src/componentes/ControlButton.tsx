@@ -15,7 +15,7 @@ export function ControlButton({ icone, ariaLabel, title, onClick }: ControlButto
       aria-label={ariaLabel}
       title={title}
       onClick={onClick}
-      className="grid h-14 w-14 place-items-center rounded-2xl border border-border bg-panel text-muted max-mobile:h-12 max-mobile:w-12"
+      className="grid h-14 w-14 place-items-center rounded-2xl border border-border bg-panel text-muted max-mobile:h-12 max-mobile:w-12 [&_svg]:size-[21px] [&_svg]:shrink-0"
     >
       {icone}
     </button>

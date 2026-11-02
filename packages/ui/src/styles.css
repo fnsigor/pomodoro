@@ -68,6 +68,16 @@
     outline: 3px solid var(--color-primary);
     outline-offset: 2px;
   }
+
+  button:enabled,
+  [role='button']:not([aria-disabled='true']) {
+    cursor: pointer;
+  }
+
+  button:disabled,
+  [role='button'][aria-disabled='true'] {
+    cursor: not-allowed;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {

@@ -153,7 +153,7 @@ export function CarouselPrevious({ className, ...props }: React.ComponentProps<'
       aria-label="Opções anteriores"
       onClick={scrollPrev}
       disabled={!canScrollPrev}
-      className={`grid h-[72px] w-8 shrink-0 place-items-center text-muted transition-opacity disabled:cursor-default disabled:opacity-30 max-mobile:hidden ${className ?? ''}`}
+      className={`grid h-[72px] w-8 shrink-0 place-items-center text-muted transition-opacity disabled:cursor-not-allowed disabled:opacity-30 max-mobile:hidden ${className ?? ''}`}
       {...props}
     >
       <IconeSetaEsquerda className="h-5 w-5" />
@@ -170,7 +170,7 @@ export function CarouselNext({ className, ...props }: React.ComponentProps<'butt
       aria-label="Próximas opções"
       onClick={scrollNext}
       disabled={!canScrollNext}
-      className={`grid h-[72px] w-8 shrink-0 place-items-center text-muted transition-opacity disabled:cursor-default disabled:opacity-30 max-mobile:hidden ${className ?? ''}`}
+      className={`grid h-[72px] w-8 shrink-0 place-items-center text-muted transition-opacity disabled:cursor-not-allowed disabled:opacity-30 max-mobile:hidden ${className ?? ''}`}
       {...props}
     >
       <IconeSetaDireita className="h-5 w-5" />
