@@ -73,6 +73,9 @@ export function Carousel({
 
   React.useEffect(() => {
     if (!api) return;
+    // Sincroniza o estado inicial do Embla com os botões; não há outra fonte
+    // para `canScrollPrev/Next` antes do primeiro evento de scroll.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     onSelect(api);
     api.on('reInit', onSelect);
     api.on('select', onSelect);

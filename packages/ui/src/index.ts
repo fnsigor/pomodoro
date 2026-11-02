@@ -24,3 +24,4 @@ export * from './componentes/Toast';
 export * from './componentes/Topbar';
 
 export * from './icones';
+export * from './toastManager';

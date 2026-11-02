@@ -79,7 +79,7 @@ Verificado com Playwright em 1440×900, 1280×720, 1024×768, 800×600, 390×844
 - O viewport do Embla usa `-mt-12 pt-12` para estender a área de recorte para cima: a margem negativa cancela o padding e o layout não se desloca, mas o card selecionado (que sobe `14px`) e o glow não são cortados. Nas laterais há um fade de 20px (`mask-image`), que suaviza o glow no limite do viewport.
 - `PresetCard` virou `motion.button` com `layout` e spring (`stiffness: 460`, `damping: 36`, `mass: 0.7`): ao trocar a seleção, os cards vizinhos deslizam e o selecionado cresce/sobe de forma contínua. O conteúdo (valor, unidade e rótulo) entra com fade + scale de `0.18s`; há feedback de `whileTap` (`scale: 0.97`).
 - `useReducedMotion` desliga as animações de layout, o fade e o `whileTap` quando `prefers-reduced-motion` está ativo.
-- `packages/app/vitest.setup.ts` ganhou stubs de `ResizeObserver` e `window.matchMedia`, usados pelo Embla/Motion e ausentes no jsdom.
+- `packages/app/vitest.setup.ts` ganhou stubs de `ResizeObserver`, `IntersectionObserver` e `window.matchMedia`, usados pelo Embla/Motion e ausentes no jsdom.
 
 Verificado com Playwright em 650×800 e 1440×900: clicar em "Próximas opções" altera a transformação do Embla e mantém o preset selecionado; `←`/`→` trocam a seleção; cliques em `Estendido`/`Deep Work` animam até ~320ms sem erros de console; o layout continua sem scroll de página.
 

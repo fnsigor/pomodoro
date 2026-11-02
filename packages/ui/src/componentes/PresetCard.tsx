@@ -1,4 +1,4 @@
-import { motion, useReducedMotion } from 'motion/react';
+import { motion, useReducedMotion, type Transition } from 'motion/react';
 
 export type PresetVariante = 'selecionado' | 'normal' | 'adicionar';
 
@@ -22,8 +22,10 @@ export function PresetCard({ rotulo, valorCurto, unidade, variante, ariaLabel, o
   const selecionado = variante === 'selecionado';
   const adicionar = variante === 'adicionar';
   const reduzirMovimento = useReducedMotion();
-  const transicao = reduzirMovimento ? { duration: 0 } : MOLA;
-  const transicaoConteudo = reduzirMovimento ? { duration: 0 } : { duration: 0.18, ease: 'easeOut' };
+  const transicao: Transition = reduzirMovimento ? { duration: 0 } : MOLA;
+  const transicaoConteudo: Transition = reduzirMovimento
+    ? { duration: 0 }
+    : { duration: 0.18, ease: 'easeOut' };
 
   return (
     <motion.button

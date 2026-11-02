@@ -1,6 +1,6 @@
 import type { MouseEvent, ReactNode } from 'react';
 import { useEffect } from 'react';
-import { AnimatePresence, motion, useReducedMotion } from 'motion/react';
+import { AnimatePresence, motion, useReducedMotion, type Transition } from 'motion/react';
 
 export interface ModalProps {
   aberto: boolean;
@@ -19,8 +19,10 @@ export interface ModalProps {
  */
 export function Modal({ aberto, titulo, onFechar, children }: ModalProps) {
   const reduzirMovimento = useReducedMotion() ?? false;
-  const transicaoFundo = reduzirMovimento ? { duration: 0 } : { duration: 0.18, ease: 'easeOut' };
-  const transicaoCard = reduzirMovimento
+  const transicaoFundo: Transition = reduzirMovimento
+    ? { duration: 0 }
+    : { duration: 0.18, ease: 'easeOut' };
+  const transicaoCard: Transition = reduzirMovimento
     ? { duration: 0 }
     : { type: 'spring', stiffness: 420, damping: 34, mass: 0.8 };
 
